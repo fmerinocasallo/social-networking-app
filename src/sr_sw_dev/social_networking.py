@@ -192,3 +192,27 @@ class SocialNetwork:
         if not self.has_user(name):
             raise ValueError(f"User {name} does not exist")
         return self.users[name].get_posts()
+
+
+class Application:
+    """
+    A social networking application.
+
+    Attributes:
+        social_network:
+            The social network of the application.
+        commands:
+            The commands of the application.
+    """
+
+    def __init__(self):
+        """Initializes a social networking application."""
+        pass
+
+    def has_social_network(self) -> bool:
+        """Checks if the application has a social network."""
+        return False
+
+    def has_commands(self, command: str) -> bool:
+        """Checks if the application has commands to execute."""
+        return False
