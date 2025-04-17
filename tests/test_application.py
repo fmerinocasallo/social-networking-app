@@ -15,28 +15,28 @@ def test_application_init():
     assert application.has_commands(), "Application should have commands to execute"
 
 def test_application_parse_command_posting():
-    """Checks that an application can parse a command."""
+    """Checks that an application can parse postings."""
     application = Application()
     application.parse_command("Alice -> I love the weather today!")
     
     assert application.get_social_network().get_user_posts("Alice") == ["I love the weather today! (just now)"], "Post should be visible in user's timeline"
 
 def test_application_parse_command_posting_empty_user():
-    """Checks that an application can parse a command with an empty user."""
+    """Checks that an application can parse postings with an empty user."""
     application = Application()
 
     with pytest.raises(ValueError, match="Invalid posting command: username is empty"):
         application.parse_command("-> I love the weather today!")
 
 def test_application_parse_command_posting_empty_message():
-    """Checks that an application can parse a command with an empty message."""
+    """Checks that an application can parse postings with an empty message."""
     application = Application()
 
     with pytest.raises(ValueError, match="Invalid posting command: message is empty"):
         application.parse_command("Alice ->")
 
 def test_application_parse_command_reading():
-    """Checks that an application can parse a command with an empty message."""
+    """Checks that an application can parse readings."""
     application = Application()
 
     with freeze_time(datetime.now() - timedelta(minutes=5)):
