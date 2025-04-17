@@ -153,3 +153,22 @@ class User:
     def add_post(self, post: str):
         """Adds a post to the user's timeline."""
         self.posts.append(Post(post))
+
+
+class SocialNetwork:
+    """
+    A social network.
+
+    Attributes:
+        users:
+            The users of the social network.
+    """
+
+    def __init__(self):
+        """Initializes a social network."""
+        pass
+
+    def has_users(self) -> bool:
+        """Checks if the social network has any users."""
+        return True
+
