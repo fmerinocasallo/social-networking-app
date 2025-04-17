@@ -1,5 +1,8 @@
 """This module provides tests for the Application class."""
 
+from datetime import datetime, timedelta
+
+from freezegun import freeze_time
 import pytest
 
 from src.sr_sw_dev.social_networking import Application
@@ -36,9 +39,21 @@ def test_application_parse_command_reading():
     """Checks that an application can parse a command with an empty message."""
     application = Application()
 
-    application.parse_command("Alice -> I love the weather today!")
-    timeline = application.parse_command("Alice")
-    assert timeline == ["I love the weather today! (just now)"], "Timeline should contain the post"
+    with freeze_time(datetime.now() - timedelta(minutes=5)):
+        application.parse_command("Alice -> I love the weather today!")
+
+    with freeze_time(datetime.now() - timedelta(minutes=2)):
+        application.parse_command("Bob -> Damn! We lost!")
+
+    with freeze_time(datetime.now() - timedelta(minutes=1)):
+        application.parse_command("Bob -> Good game though.")
+    
+    print(f"Alice's timeline: {application.parse_command('Alice')}")
+    print(f"Bob's timeline: {application.parse_command('Bob')}")
+
+    assert application.parse_command("Alice") == ["I love the weather today! (5 minutes ago)"], "Timeline should contain Alice's post"
+
+    assert application.parse_command("Bob") == ["Good game though. (1 minute ago)", "Damn! We lost! (2 minutes ago)"], "Timeline should contain Bob's posts"
 
 def test_application_parse_command_invalid_command():
     """Checks that an application can parse a command with an invalid command."""
