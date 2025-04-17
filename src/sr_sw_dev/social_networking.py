@@ -1,7 +1,11 @@
 """
 This module provides a social networking application.
 
-The application allows users to post messages to their own timeline.
+The application allows users to:
+- post messages to their own timeline (e.g. "Alice -> I love the weather today!").
+- read the timeline of another user (e.g. "Alice").
+- follow other users (e.g. "Alice follows Bob").
+- read the wall of another user (e.g. "Alice wall").
 """
 from datetime import datetime
 from functools import total_ordering
