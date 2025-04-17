@@ -163,3 +163,7 @@ class SocialNetwork:
     def has_user(self, name: str) -> bool:
         """Checks if the social network has a user with the given name."""
         return name in self.users
+
+    def count_users(self) -> int:
+        """Returns the number of users in the social network."""
+        return len(self.users)
