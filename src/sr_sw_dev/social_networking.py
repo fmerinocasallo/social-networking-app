@@ -144,11 +144,11 @@ class User:
 
     def follows(self, user: "User"):
         """Adds a user to the user's following list."""
-        pass
+        self.following.append(user)
 
     def get_following(self) -> list["User"]:
         """Returns the users that the user is following."""
-        return None
+        return self.following
 
 class SocialNetwork:
     """
