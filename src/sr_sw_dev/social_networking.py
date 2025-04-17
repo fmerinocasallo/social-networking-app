@@ -69,7 +69,7 @@ class Post:
         )
 
         # Only show the most meaningful time unit
-        elapsed_time = ''
+        elapsed_time = ""
         if delta.years > 0:
             elapsed_time = f"{delta.years} year{'s' if delta.years != 1 else ''} ago"
         elif delta.months > 0:
