@@ -14,11 +14,19 @@ def test_user_eq():
     user2 = User('Alice')
     assert user1 == user2, "Users with same name should be equal"
 
+    user1.add_post('I love the weather today')
+    user2.add_post('I love the weather today')
+    assert user1 == user2, "Users with same name and posts should be equal"
+
 def test_user_ne():
     """Checks that the user is not equal to another user with a different name."""
     user1 = User('Alice')
     user2 = User('Bob')
     assert user1 != user2, "Users with different names should not be equal"
+
+    user3 = User('Alice')
+    user3.add_post('I love the weather today')
+    assert user1 != user2, "Users with different posts should not be equal"
 
 def test_user_add_post():
     """Checks that the user can add a post."""
