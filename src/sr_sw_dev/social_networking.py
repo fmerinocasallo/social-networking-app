@@ -22,8 +22,8 @@ class Post:
             content:
                 The content of the post.
         """
-        pass
+        self.content = content
 
     def get_content(self) -> str:
         """Returns the content of the post."""
-        return None
+        return self.content
