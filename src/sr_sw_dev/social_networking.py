@@ -150,9 +150,9 @@ class SocialNetwork:
 
     def __init__(self):
         """Initializes a social network."""
-        pass
+        self.users = {}
 
     def has_users(self) -> bool:
         """Checks if the social network has any users."""
-        return True
+        return bool(self.users)
 
