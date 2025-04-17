@@ -27,6 +27,10 @@ class Post:
         self.content = content
         self.timestamp = datetime.now().replace(second=0, microsecond=0)
 
+    def __eq__(self, other: "Post") -> bool:
+        """Checks if two posts are equal."""
+        return self.content == other.content and self.timestamp == other.timestamp
+
     def get_content(self) -> str:
         """Returns the content of the post."""
         return self.content
