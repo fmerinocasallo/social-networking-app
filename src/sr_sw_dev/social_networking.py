@@ -158,8 +158,8 @@ class SocialNetwork:
 
     def add_user(self, name: str):
         """Adds a user to the social network."""
-        pass
+        self.users[name] = User(name)
 
     def has_user(self, name: str) -> bool:
         """Checks if the social network has a user with the given name."""
-        pass
+        return name in self.users
