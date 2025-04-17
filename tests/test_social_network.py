@@ -44,6 +44,12 @@ def test_social_network_add_post_nonexistent_user():
     with pytest.raises(ValueError, match="User Alice does not exist"):
         social_network.add_post("Alice", "I love the weather today")
 
+def test_social_network_get_user_timeline_nonexistent_user():
+    """Checks that users can get their timeline."""
+    social_network = SocialNetwork()
+    social_network.add_user("Alice")
+    social_network.add_post("Alice", "I love the weather today")
+
     with pytest.raises(ValueError, match="User Bob does not exist"):
         social_network.get_user_timeline("Bob")
 
