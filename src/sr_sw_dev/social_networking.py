@@ -204,6 +204,13 @@ class SocialNetwork:
             raise ValueError(f"User {name} does not exist")
         return self.users[name].get_posts()
 
+    def follows(self, name: str, following: str):
+        """Adds a user to the user's following list."""
+        pass
+
+    def get_following(self, name: str) -> list[str]:
+        """Returns the users that the user is following."""
+        pass
 
 class Application:
     """

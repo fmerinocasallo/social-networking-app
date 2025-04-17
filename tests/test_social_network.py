@@ -42,3 +42,12 @@ def test_social_network_add_post_nonexistent_user():
 
     with pytest.raises(ValueError, match="User Alice does not exist"):
         social_network.get_user_posts("Alice")
+
+def test_social_network_follows():
+    """Checks that users can follow other users."""
+    social_network = SocialNetwork()
+    social_network.add_user("Alice")
+    social_network.add_user("Bob")
+    social_network.follows("Alice", "Bob")
+
+    assert social_network.get_following("Alice") == ["Bob"], "User should follow the other user"
