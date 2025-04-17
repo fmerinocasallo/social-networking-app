@@ -144,12 +144,12 @@ class User:
 
     def count_posts(self) -> int:
         """Returns the number of posts the user has."""
-        return None
+        return len(self.posts)
 
     def get_posts(self) -> list[Post]:
         """Returns the posts of the user."""
-        return None
+        return [str(post) for post in self.posts]
 
     def add_post(self, post: str):
         """Adds a post to the user's timeline."""
-        pass
+        self.posts.append(Post(post))
