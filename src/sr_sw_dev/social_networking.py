@@ -111,11 +111,12 @@ class User:
             name:
                 The name of the user.
         """
-        pass
+        self.name = name
+        self.posts = []
 
     def get_name(self) -> str:
         """Returns the name of the user."""
-        return None
+        return self.name
 
     def has_posts(self) -> bool:
         """
@@ -125,4 +126,4 @@ class User:
             bool:
                 True if the user has posts, False otherwise.
         """
-        return False
+        return bool(self.posts)
