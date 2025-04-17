@@ -4,10 +4,12 @@ This module provides a social networking application.
 The application allows users to post messages to their own timeline.
 """
 from datetime import datetime
+from functools import total_ordering
 
 from dateutil.relativedelta import relativedelta
 
 
+@total_ordering
 class Post:
     """
     A post on a user's timeline.
@@ -33,6 +35,10 @@ class Post:
     def __eq__(self, other: "Post") -> bool:
         """Checks if two posts are equal."""
         return self.content == other.content and self.timestamp == other.timestamp
+
+    def __lt__(self, other: "Post") -> bool:
+        """Checks if this post is less than another post."""
+        return self.timestamp < other.timestamp
 
     def __str__(self) -> str:
         """Returns a string representation of the post."""

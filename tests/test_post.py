@@ -28,6 +28,15 @@ def test_post_eq():
     post2 = Post("I love the weather today!")
     assert post1 == post2
 
+def test_post_lt():
+    """Checks that a post is less than another post if it has an earlier timestamp."""
+    with freeze_time(datetime.now() + relativedelta(seconds=5)):
+        post1 = Post("I love the weather today!")
+
+    with freeze_time(datetime.now() + relativedelta(seconds=10)):
+        post2 = Post("I love the weather today!")
+        assert post1 < post2
+
 def test_post_str():
     """Checks that a post is converted to a string correctly."""
     post = Post("I love the weather today!")
