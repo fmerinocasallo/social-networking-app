@@ -7,6 +7,7 @@ from datetime import datetime
 
 from dateutil.relativedelta import relativedelta
 
+
 class Post:
     """
     A post on a user's timeline.
@@ -45,7 +46,7 @@ class Post:
         """Checks if the post is recent."""
         return (
             datetime.now().replace(second=0, microsecond=0) - self.timestamp
-        ).total_seconds() <= 60
+        ).total_seconds() < 60
 
     def _format_elapsed_time(self) -> str:
         """Returns the elapsed time since the post was created."""
@@ -132,7 +133,7 @@ class User:
 
     def get_posts(self) -> list[Post]:
         """Returns the posts of the user."""
-        return [str(post) for post in self.posts]
+        return [str(post) for post in reversed(self.posts)]
 
     def add_post(self, post: str):
         """Adds a post to the user's timeline."""
@@ -224,7 +225,7 @@ class Application:
         """Checks if the application has commands to execute."""
         return bool(self.commands)
     
-    def parse_command(self, command: str):
+    def parse_command(self, command: str) -> list[str] | None:
         """Parses and executes a command.
 
         Args:
@@ -266,7 +267,7 @@ class Application:
                     # We expect a predicate
                     raise ValueError("Invalid posting command: message is empty")
         elif self.get_social_network().has_user(command):
-            return None
+            return self.get_social_network().get_user_posts(command)
         else:
             # Assume the command is invalid
             raise ValueError(f"Invalid command: {command}")
