@@ -39,3 +39,6 @@ def test_social_network_add_post_nonexistent_user():
     social_network = SocialNetwork()
     with pytest.raises(ValueError, match="User Alice does not exist"):
         social_network.add_post("Alice", "I love the weather today")
+
+    with pytest.raises(ValueError, match="User Alice does not exist"):
+        social_network.get_user_posts("Alice")
