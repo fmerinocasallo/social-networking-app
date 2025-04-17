@@ -3,7 +3,7 @@ This module provides a social networking application.
 
 The application allows users to post messages to their own timeline.
 """
-
+from datetime import datetime
 
 class Post:
     """
@@ -25,6 +25,7 @@ class Post:
                 The content of the post.
         """
         self.content = content
+        self.timestamp = datetime.now().replace(second=0, microsecond=0)
 
     def get_content(self) -> str:
         """Returns the content of the post."""
@@ -32,4 +33,6 @@ class Post:
 
     def is_recent(self) -> bool:
         """Checks if the post is recent."""
-        return None
+        return (
+            datetime.now().replace(second=0, microsecond=0) - self.timestamp
+        ).total_seconds() <= 60
