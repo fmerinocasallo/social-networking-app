@@ -11,21 +11,21 @@ def test_application_init():
     assert application.has_social_network(), "Application should have a social network"
     assert application.has_commands(), "Application should have commands to execute"
 
-def test_application_parse_command():
+def test_application_parse_command_posting():
     """Checks that an application can parse a command."""
     application = Application()
     application.parse_command("Alice -> I love the weather today!")
     
     assert application.get_social_network().get_user_posts("Alice") == ["I love the weather today! (just now)"], "Post should be visible in user's timeline"
 
-def test_application_parse_command_empty_user():
+def test_application_parse_command_posting_empty_user():
     """Checks that an application can parse a command with an empty user."""
     application = Application()
 
     with pytest.raises(ValueError, match="Invalid posting command: username is empty"):
         application.parse_command("-> I love the weather today!")
 
-def test_application_parse_command_empty_message():
+def test_application_parse_command_posting_empty_message():
     """Checks that an application can parse a command with an empty message."""
     application = Application()
 
