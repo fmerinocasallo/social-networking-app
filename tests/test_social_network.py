@@ -1,4 +1,5 @@
-"""This module provides tests for the social networking application."""
+"""This module provides tests for the SocialNetwork class."""
+
 import pytest
 
 from src.sr_sw_dev.social_networking import SocialNetwork
