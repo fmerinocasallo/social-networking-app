@@ -225,5 +225,46 @@ class Application:
         return bool(self.commands)
     
     def parse_command(self, command: str):
-        """Parses and executes a command."""
-        pass
+        """Parses and executes a command.
+
+        Args:
+            command:
+                The command to parse and execute.
+
+        Raises:
+            ValueError:
+                If the command is invalid.
+        """
+        # Strip whitespace from command
+        command = command.strip()
+
+        # Check if the command is valid
+        username, action, predicate = None, None, None
+        for cmd in self.commands:
+            if cmd in command:
+                username, predicate = command.split(cmd)
+
+                # Strip whitespace from username and predicate
+                username = username.strip()
+                predicate = predicate.strip()
+                action = self.commands[cmd]
+                break
+
+        if action == "posting":
+            if username and predicate:
+                # If the user does not exist, add them to the social network
+                if not self.social_network.has_user(username):
+                    self.social_network.add_user(username)
+
+                # Add the post to the user's timeline
+                self.social_network.add_post(username, predicate)
+            else:
+                if not username:
+                    # We expect a username
+                    raise ValueError("Invalid posting command: username is empty")
+                else:
+                    # We expect a predicate
+                    raise ValueError("Invalid posting command: message is empty")
+        else:
+            # Assume the command is invalid
+            raise ValueError(f"Invalid command: {command}")
