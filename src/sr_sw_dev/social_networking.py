@@ -5,6 +5,8 @@ The application allows users to post messages to their own timeline.
 """
 from datetime import datetime
 
+from dateutil.relativedelta import relativedelta
+
 class Post:
     """
     A post on a user's timeline.
@@ -31,6 +33,10 @@ class Post:
         """Checks if two posts are equal."""
         return self.content == other.content and self.timestamp == other.timestamp
 
+    def __str__(self) -> str:
+        """Returns a string representation of the post."""
+        return f"{self.content} ({self._format_elapsed_time()})"
+
     def get_content(self) -> str:
         """Returns the content of the post."""
         return self.content
@@ -40,3 +46,47 @@ class Post:
         return (
             datetime.now().replace(second=0, microsecond=0) - self.timestamp
         ).total_seconds() <= 60
+
+    def _format_elapsed_time(self) -> str:
+        """Returns the elapsed time since the post was created."""
+        delta = relativedelta(
+            datetime.now().replace(second=0, microsecond=0),
+            self.timestamp,
+        )
+
+        parts = []
+        if delta.years > 0:
+            parts.append(f"{delta.years} year{'s' if delta.years != 1 else ''}")
+
+        if delta.months > 0:
+            parts.append(f"{delta.months} month{'s' if delta.months != 1 else ''}")
+
+        # Only show the days if the total elapsed time is less than a year.
+        # Otherwise, the elapsed days are not meaningful.
+        if (delta.days > 0) and (delta.years == 0):
+            parts.append(f"{delta.days} day{'s' if delta.days != 1 else ''}")
+
+        # Only show the hours if the total elapsed time is less than a month.
+        # Otherwise, the elapsed hours are not meaningful.
+        if (delta.hours > 0) and (delta.years == 0) and (delta.months == 0):
+            parts.append(f"{delta.hours} hour{'s' if delta.hours != 1 else ''}")
+
+        # Only show the minutes if the total elapsed time is less than a day.
+        # Otherwise, the elapsed minutes are not meaningful.
+        if (
+            (delta.minutes > 0)
+            and (delta.years == 0)
+            and (delta.months == 0)
+            and (delta.days == 0)
+        ):
+            parts.append(f"{delta.minutes} minute{'s' if delta.minutes != 1 else ''}")
+
+        if len(parts) == 2:
+            elapsed_time = f"{parts[0]} and {parts[1]} ago"
+        elif len(parts) == 1:
+            elapsed_time = f"{parts[0]} ago"
+        else:
+            # If the elapsed time is less than a minute, show "just now".
+            elapsed_time = "just now"
+
+        return elapsed_time
