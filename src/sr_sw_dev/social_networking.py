@@ -167,3 +167,19 @@ class SocialNetwork:
     def count_users(self) -> int:
         """Returns the number of users in the social network."""
         return len(self.users)
+
+    def add_post(self, name: str, post: str):
+        """
+        Adds a post to the user's timeline.
+
+        Args:
+            name:
+                The name of the user.
+            post:
+                The post to add.
+        """
+        pass
+
+    def get_user_posts(self, name: str) -> list[str]:
+        """Returns the posts of the user."""
+        pass
