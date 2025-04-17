@@ -14,14 +14,16 @@ def test_application_init():
     assert application.has_social_network(), "Application should have a social network"
     assert application.has_commands(), "Application should have commands to execute"
 
+
 def test_application_parse_command_posting():
     """Checks that an application can parse postings."""
     application = Application()
     application.parse_command("Alice -> I love the weather today!")
-    
+
     posts = application.get_social_network().get_user_timeline("Alice")
     expected_posts = ["I love the weather today! (just now)"]
     assert posts == expected_posts, "Post should be visible in user's timeline"
+
 
 def test_application_parse_command_posting_empty_user():
     """Checks that an application can parse postings with an empty user."""
@@ -30,12 +32,14 @@ def test_application_parse_command_posting_empty_user():
     with pytest.raises(ValueError, match="Invalid posting command: username is empty"):
         application.parse_command("-> I love the weather today!")
 
+
 def test_application_parse_command_posting_empty_message():
     """Checks that an application can parse postings with an empty message."""
     application = Application()
 
     with pytest.raises(ValueError, match="Invalid posting command: message is empty"):
         application.parse_command("Alice ->")
+
 
 def test_application_parse_command_reading():
     """Checks that an application can parse readings."""
@@ -61,6 +65,7 @@ def test_application_parse_command_reading():
     ]
     assert timeline == expected_timeline, "Timeline should contain Bob's posts"
 
+
 def test_application_parse_command_reading_nonexistent_user():
     """Checks that an application can parse readings with a nonexistent user."""
     application = Application()
@@ -68,26 +73,35 @@ def test_application_parse_command_reading_nonexistent_user():
     with pytest.raises(ValueError, match="Invalid user: Charlie"):
         application.parse_command("Charlie")
 
+
 def test_application_parse_command_following():
     """Checks that an application can parse following commands."""
     application = Application()
     application.parse_command("Alice -> I love the weather today!")
-    application.parse_command("Charlie -> I'm in New York today! Anyone want to have a coffee?")
+    application.parse_command(
+        "Charlie -> I'm in New York today! Anyone want to have a coffee?"
+    )
     application.parse_command("Charlie follows Alice")
 
     following = application.get_social_network().get_following("Charlie")
     expected_following = ["Alice"]
     assert following == expected_following, "Charlie should follow Alice"
 
+
 def test_application_parse_command_following_nonexistent_user():
     """Checks that an application can parse following commands with a nonexistent user."""
     application = Application()
 
-    with pytest.raises(ValueError, match="Invalid following command: username is empty"):
+    with pytest.raises(
+        ValueError, match="Invalid following command: username is empty"
+    ):
         application.parse_command("follows Alice")
 
-    with pytest.raises(ValueError, match="Invalid following command: user to follow is empty"):
+    with pytest.raises(
+        ValueError, match="Invalid following command: user to follow is empty"
+    ):
         application.parse_command("Charlie follows ")
+
 
 def test_application_parse_command_wall():
     """Checks that an application can parse wall commands."""
@@ -103,7 +117,9 @@ def test_application_parse_command_wall():
         application.parse_command("Bob -> Good game though.")
 
     with freeze_time(datetime.now() - timedelta(seconds=2)):
-        application.parse_command("Charlie -> I'm in New York today! Anyone want to have a coffee?")
+        application.parse_command(
+            "Charlie -> I'm in New York today! Anyone want to have a coffee?"
+        )
         application.parse_command("Charlie follows Alice")
 
     wall = application.parse_command("Charlie wall")
@@ -112,7 +128,9 @@ def test_application_parse_command_wall():
         "Alice - I love the weather today! (5 minutes ago)",
     ]
 
-    assert wall == expected_wall, "Charlie's wall should contain Alice's and his own posts"
+    assert wall == expected_wall, (
+        "Charlie's wall should contain Alice's and his own posts"
+    )
 
     with freeze_time(datetime.now() + timedelta(seconds=13)):
         application.parse_command("Charlie follows Bob")
@@ -124,7 +142,10 @@ def test_application_parse_command_wall():
             "Bob - Damn! We lost! (2 minutes ago)",
             "Alice - I love the weather today! (5 minutes ago)",
         ]
-        assert wall == expected_wall, "Charlie's wall should contain Alice's, Bob's and his own posts"
+        assert wall == expected_wall, (
+            "Charlie's wall should contain Alice's, Bob's and his own posts"
+        )
+
 
 def test_application_parse_command_wall_nonexistent_user():
     """Checks that an application can parse wall commands with a nonexistent user."""
@@ -132,6 +153,7 @@ def test_application_parse_command_wall_nonexistent_user():
 
     with pytest.raises(ValueError, match="Invalid wall command: username is empty"):
         application.parse_command("wall")
+
 
 def test_application_parse_command_invalid_command():
     """Checks that an application can parse a command with an invalid command."""

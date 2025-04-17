@@ -7,6 +7,7 @@ The application allows users to:
 - follow other users (e.g. "Alice follows Bob").
 - read the wall of another user (e.g. "Alice wall").
 """
+
 from datetime import datetime
 from functools import total_ordering
 
