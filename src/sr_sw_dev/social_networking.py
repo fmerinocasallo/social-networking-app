@@ -207,12 +207,15 @@ class Application:
 
     def __init__(self):
         """Initializes a social networking application."""
-        pass
+        self.social_network = SocialNetwork()
+        self.commands = {
+            "->": "posting",
+        }.copy()
 
     def has_social_network(self) -> bool:
         """Checks if the application has a social network."""
-        return False
+        return bool(self.social_network)
 
-    def has_commands(self, command: str) -> bool:
+    def has_commands(self) -> bool:
         """Checks if the application has commands to execute."""
-        return False
+        return bool(self.commands)
