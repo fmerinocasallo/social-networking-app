@@ -90,3 +90,39 @@ class Post:
             elapsed_time = "just now"
 
         return elapsed_time
+
+
+class User:
+    """
+    A user of the social networking application.
+
+    Attributes:
+        name:
+            The name of the user.
+        posts:
+            The posts of the user.
+    """
+
+    def __init__(self, name: str):
+        """
+        Initializes a user.
+
+        Args:
+            name:
+                The name of the user.
+        """
+        pass
+
+    def get_name(self) -> str:
+        """Returns the name of the user."""
+        return None
+
+    def has_posts(self) -> bool:
+        """
+        Checks if the user has any posts.
+
+        Returns:
+            bool:
+                True if the user has posts, False otherwise.
+        """
+        return False
