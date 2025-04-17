@@ -94,7 +94,7 @@ class Post:
 
 class User:
     """
-    A user of the social networking application.
+    A user of a social network.
 
     Attributes:
         name:
@@ -115,17 +115,7 @@ class User:
         self.posts = []
 
     def __eq__(self, other: "User") -> bool:
-        """
-        Checks if two users are equal.
-
-        Args:
-            other:
-                The other user to compare to.
-
-        Returns:
-            bool:
-                True if the users are equal, False otherwise.
-        """
+        """Checks if two users are equal."""
         return (self.name == other.name) and (self.posts == other.posts)
 
     def get_name(self) -> str:
@@ -133,13 +123,7 @@ class User:
         return self.name
 
     def has_posts(self) -> bool:
-        """
-        Checks if the user has any posts.
-
-        Returns:
-            bool:
-                True if the user has posts, False otherwise.
-        """
+        """Checks if the user has any posts."""
         return bool(self.posts)
 
     def count_posts(self) -> int:
