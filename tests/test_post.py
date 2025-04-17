@@ -1,5 +1,9 @@
 """This module provides tests for the Post class."""
 
+from datetime import datetime, timedelta
+
+from freezegun import freeze_time
+
 from src.sr_sw_dev.social_networking import Post
 
 
@@ -15,3 +19,10 @@ def test_post_eq():
     post1 = Post("I love the weather today!")
     post2 = Post("I love the weather today!")
     assert post1 == post2
+
+def test_post_is_recent():
+    """Checks that a post is recent if the timestamp is within the last minute."""
+    post = Post("I love the weather today!")
+    assert post.is_recent(), "New post should be considered recent"
+    with freeze_time(datetime.now() + timedelta(minutes=5)):
+        assert not post.is_recent(), "Post should not be considered recent after more than 1 minute"
