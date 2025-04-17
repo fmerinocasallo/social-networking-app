@@ -216,6 +216,14 @@ class Application:
         """Checks if the application has a social network."""
         return bool(self.social_network)
 
+    def get_social_network(self) -> SocialNetwork:
+        """Returns the social network of the application."""
+        return self.social_network
+
     def has_commands(self) -> bool:
         """Checks if the application has commands to execute."""
         return bool(self.commands)
+    
+    def parse_command(self, command: str):
+        """Parses and executes a command."""
+        pass
