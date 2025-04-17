@@ -48,3 +48,20 @@ def test_user_following():
     user2 = User("Bob")
     user1.follows(user2)
     assert user1.get_following() == [user2], "User should follow the other user"
+
+def test_user_wall():
+    """Checks that the user can get their wall."""
+    user1 = User("Alice")
+
+    with freeze_time(datetime.now() - timedelta(minutes=5)):
+        user1.add_post("I love the weather today")
+
+    user2 = User("Charlie")
+    with freeze_time(datetime.now() - timedelta(minutes=2)):
+        user2.add_post("I'm in New York today! Anyone wants to have a coffee?")
+
+    user1.follows(user2)
+
+    wall = user1.get_wall()
+    expected_wall = ["Alice - I love the weather today (5 minutes ago)", "Charlie - I'm in New York today! Anyone wants to have a coffee? (2 minutes ago)"]
+    assert wall == expected_wall, "User should have two posts on their wall"

@@ -126,6 +126,13 @@ def test_application_parse_command_wall():
         ]
         assert wall == expected_wall, "Charlie's wall should contain Alice's, Bob's and his own posts"
 
+def test_application_parse_command_wall_nonexistent_user():
+    """Checks that an application can parse wall commands with a nonexistent user."""
+    application = Application()
+
+    with pytest.raises(ValueError, match="Invalid wall command: username is empty"):
+        application.parse_command("wall")
+
 def test_application_parse_command_invalid_command():
     """Checks that an application can parse a command with an invalid command."""
     application = Application()
