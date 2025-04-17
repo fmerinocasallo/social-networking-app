@@ -19,7 +19,7 @@ def test_application_parse_command_posting():
     application = Application()
     application.parse_command("Alice -> I love the weather today!")
     
-    assert application.get_social_network().get_user_posts("Alice") == ["I love the weather today! (just now)"], "Post should be visible in user's timeline"
+    assert application.get_social_network().get_user_timeline("Alice") == ["I love the weather today! (just now)"], "Post should be visible in user's timeline"
 
 def test_application_parse_command_posting_empty_user():
     """Checks that an application can parse postings with an empty user."""
@@ -93,14 +93,14 @@ def test_application_parse_command_wall():
     with freeze_time(datetime.now() - timedelta(seconds=2)):
         application.parse_command("Charlie -> I'm in New York today! Anyone want to have a coffee?")
         application.parse_command("Charlie follows Alice")
-        wall = application.parse_command("Charlie wall")
 
+        wall = application.parse_command("Charlie wall")
         assert wall == ["Charlie - I'm in New York today! Anyone want to have a coffee? (2 seconds ago)", "Alice - I love the weather today! (5 minutes ago)"], "Charlie's wall should contain Alice's and his own posts"
 
     with freeze_time(datetime.now() + timedelta(seconds=13)):
         application.parse_command("Charlie follows Bob")
-        wall = application.parse_command("Charlie wall")
 
+        wall = application.parse_command("Charlie wall")
         assert wall == ["Charlie - I'm in New York today! Anyone want to have a coffee? (15 seconds ago)", "Bob - Good game though. (1 minute ago)", "Bob - Damn! We lost! (2 minutes ago)", "Alice - I love the weather today! (5 minutes ago)"], "Charlie's wall should contain Alice's, Bob's and his own posts"
 
 def test_application_parse_command_invalid_command():

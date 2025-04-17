@@ -1,4 +1,9 @@
 """This module provides tests for the User class."""
+
+from datetime import datetime, timedelta
+
+from freezegun import freeze_time
+
 from src.sr_sw_dev.social_networking import User
 
 
@@ -30,11 +35,12 @@ def test_user_ne():
 
 def test_user_add_post():
     """Checks that the user can add a post."""
-    user = User('Alice')
-    user.add_post('I love the weather today')
+    user = User("Alice")
+    user.add_post("I love the weather today")
     assert user.has_posts(), "User should have posts after adding one"
     assert user.count_posts() == 1, "User should have one post"
-    assert user.get_posts() == ["I love the weather today (just now)"], "Latest post should match added content"
+
+    assert user.get_timeline() == ["I love the weather today (just now)"], "Latest post should match added content"
 
 def test_user_following():
     """Checks that the user can follow another user."""
