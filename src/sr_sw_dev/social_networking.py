@@ -79,9 +79,13 @@ class Post:
         elif delta.hours > 0:
             elapsed_time = f"{delta.hours} hour{'s' if delta.hours != 1 else ''} ago"
         elif delta.minutes > 0:
-            elapsed_time = f"{delta.minutes} minute{'s' if delta.minutes != 1 else ''} ago"
+            elapsed_time = (
+                f"{delta.minutes} minute{'s' if delta.minutes != 1 else ''} ago"
+            )
         elif delta.seconds > 0:
-            elapsed_time = f"{delta.seconds} second{'s' if delta.seconds != 1 else ''} ago"
+            elapsed_time = (
+                f"{delta.seconds} second{'s' if delta.seconds != 1 else ''} ago"
+            )
         else:
             elapsed_time = "just now"
 
