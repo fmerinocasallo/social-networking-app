@@ -33,17 +33,20 @@ def test_post_str():
     post = Post("I love the weather today!")
     assert str(post) == "I love the weather today! (just now)"
 
-    with freeze_time(datetime.now() + relativedelta(minutes=5)):
+    with freeze_time(datetime.now() + relativedelta(seconds=5)):
+        assert str(post) == "I love the weather today! (5 seconds ago)"
+
+    with freeze_time(datetime.now() + relativedelta(minutes=5, seconds=15)):
         assert str(post) == "I love the weather today! (5 minutes ago)"
     
     with freeze_time(datetime.now() + relativedelta(hours=1, minutes=15)):
-        assert str(post) == "I love the weather today! (1 hour and 15 minutes ago)"
+        assert str(post) == "I love the weather today! (1 hour ago)"
 
     with freeze_time(datetime.now() + relativedelta(days=15, hours=5, minutes=30)):
-        assert str(post) == "I love the weather today! (15 days and 5 hours ago)"
+        assert str(post) == "I love the weather today! (15 days ago)"
     
     with freeze_time(datetime.now() + relativedelta(months=6, hours=12, minutes=45)):
         assert str(post) == "I love the weather today! (6 months ago)"
     
     with freeze_time(datetime.now() + relativedelta(years=5, months=9, days=15, minutes=15)):
-        assert str(post) == "I love the weather today! (5 years and 9 months ago)"
+        assert str(post) == "I love the weather today! (5 years ago)"
