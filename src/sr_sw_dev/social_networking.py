@@ -141,3 +141,15 @@ class User:
                 True if the user has posts, False otherwise.
         """
         return bool(self.posts)
+
+    def count_posts(self) -> int:
+        """Returns the number of posts the user has."""
+        return None
+
+    def get_posts(self) -> list[Post]:
+        """Returns the posts of the user."""
+        return None
+
+    def add_post(self, post: str):
+        """Adds a post to the user's timeline."""
+        pass
