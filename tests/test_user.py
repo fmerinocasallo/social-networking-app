@@ -35,3 +35,10 @@ def test_user_add_post():
     assert user.has_posts(), "User should have posts after adding one"
     assert user.count_posts() == 1, "User should have one post"
     assert user.get_posts() == ["I love the weather today (just now)"], "Latest post should match added content"
+
+def test_user_following():
+    """Checks that the user can follow another user."""
+    user1 = User('Alice')
+    user2 = User('Bob')
+    user1.follows(user2)
+    assert user1.get_following() == [user2], "User should follow the other user"

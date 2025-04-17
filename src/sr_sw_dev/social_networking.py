@@ -102,6 +102,8 @@ class User:
             The name of the user.
         posts:
             The posts of the user.
+        following:
+            The users that the user is following.
     """
 
     def __init__(self, name: str):
@@ -114,6 +116,7 @@ class User:
         """
         self.name = name
         self.posts = []
+        self.following = []
 
     def __eq__(self, other: "User") -> bool:
         """Checks if two users are equal."""
@@ -139,6 +142,13 @@ class User:
         """Adds a post to the user's timeline."""
         self.posts.append(Post(post))
 
+    def follows(self, user: "User"):
+        """Adds a user to the user's following list."""
+        pass
+
+    def get_following(self) -> list["User"]:
+        """Returns the users that the user is following."""
+        return None
 
 class SocialNetwork:
     """
