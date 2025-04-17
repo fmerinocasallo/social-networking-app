@@ -293,7 +293,15 @@ class Application:
                     # We expect a predicate
                     raise ValueError("Invalid posting command: message is empty")
         elif action == "following":
-            pass
+            if username and predicate:
+                self.social_network.follows(username, predicate)
+            else:
+                if not username:
+                    # We expect a username (subject)
+                    raise ValueError("Invalid following command: username is empty")
+                else:
+                    # We expect a predicate (user to follow)
+                    raise ValueError("Invalid following command: user to follow is empty")
         elif self.get_social_network().has_user(command):
             return self.get_social_network().get_user_posts(command)
         elif len(command.split(" ")) == 1:

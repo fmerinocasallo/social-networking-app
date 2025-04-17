@@ -64,8 +64,18 @@ def test_application_parse_command_following():
     application = Application()
     application.parse_command("Alice -> I love the weather today!")
     application.parse_command("Charlie -> I'm in New York today! Anyone want to have a coffee?")
-    application.parse_command("Alice follows Bob")
-    assert application.get_social_network().get_following("Alice") == ["Charlie"], "Alice should follow Bob"
+    application.parse_command("Charlie follows Alice")
+    assert application.get_social_network().get_following("Charlie") == ["Alice"], "Charlie should follow Alice"
+
+def test_application_parse_command_following_nonexistent_user():
+    """Checks that an application can parse following commands with a nonexistent user."""
+    application = Application()
+
+    with pytest.raises(ValueError, match="Invalid following command: username is empty"):
+        application.parse_command("follows Alice")
+
+    with pytest.raises(ValueError, match="Invalid following command: user to follow is empty"):
+        application.parse_command("Charlie follows ")
 
 def test_application_parse_command_invalid_command():
     """Checks that an application can parse a command with an invalid command."""
