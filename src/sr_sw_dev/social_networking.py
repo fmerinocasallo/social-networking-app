@@ -116,13 +116,28 @@ class User:
         """Returns the number of posts the user has."""
         return len(self.posts)
 
-    def get_posts(self) -> list[Post]:
-        """Returns the posts of the user."""
-        return [str(post) for post in reversed(self.posts)]
+    def get_posts(self, signed: bool = False) -> list[Post]:
+        """
+        Returns the posts of the user chronologically sorted.
+
+        Args:
+            signed:
+                Whether to return signed posts.
+        """
+        if signed:
+            posts = [post.signed_copy(self.name) for post in self.posts]
+        else:
+            posts = list(reversed(self.posts))
+
+        return posts
 
     def add_post(self, post: str):
         """Adds a post to the user's timeline."""
         self.posts.append(Post(post))
+
+    def get_timeline(self) -> list[str]:
+        """Returns the timeline of the user."""
+        return [str(post) for post in self.get_posts(signed=False)]
 
     def follows(self, user: "User"):
         """Adds a user to the user's following list."""
@@ -131,6 +146,7 @@ class User:
     def get_following(self) -> list["User"]:
         """Returns the users that the user is following."""
         return self.following
+
 
 class SocialNetwork:
     """
@@ -180,11 +196,12 @@ class SocialNetwork:
         else:
             self.users[name].add_post(post)
 
-    def get_user_posts(self, name: str) -> list[str]:
-        """Returns the posts of the user."""
+    def get_user_timeline(self, name: str) -> list[str]:
+        """Returns the timeline of the user."""
         if not self.has_user(name):
             raise ValueError(f"User {name} does not exist")
-        return self.users[name].get_posts()
+        else:
+            return [str(post) for post in self.users[name].get_posts(signed=False)]
 
     def follows(self, name: str, following: str):
         """Adds a user to the user's following list."""
@@ -201,6 +218,7 @@ class SocialNetwork:
             raise ValueError(f"User {name} does not exist")
         else:
             return [user.get_name() for user in self.users[name].get_following()]
+
 
 class Application:
     """
@@ -233,7 +251,7 @@ class Application:
     def has_commands(self) -> bool:
         """Checks if the application has commands to execute."""
         return bool(self.commands)
-    
+
     def parse_command(self, command: str) -> list[str] | None:
         """Parses and executes a command.
 
@@ -288,7 +306,7 @@ class Application:
         elif action == "wall":
             pass
         elif self.get_social_network().has_user(command):
-            return self.get_social_network().get_user_posts(command)
+            return self.get_social_network().get_user_timeline(command)
         elif len(command.split(" ")) == 1:
             # Assume the user is trying to read the timeline of a nonexistent user
             raise ValueError(f"Invalid user: {command}")
