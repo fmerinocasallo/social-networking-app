@@ -8,3 +8,4 @@ def test_post_init():
     content = "I love the weather today!"
     post = Post(content)
     assert post.get_content() == content, "Post should store the given content"
+    assert post.is_recent(), "New post should be considered recent"

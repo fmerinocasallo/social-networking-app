@@ -12,6 +12,8 @@ class Post:
     Attributes:
         content:
             The content of the post.
+        timestamp:
+            The timestamp of the post.
     """
 
     def __init__(self, content: str):
@@ -27,3 +29,7 @@ class Post:
     def get_content(self) -> str:
         """Returns the content of the post."""
         return self.content
+
+    def is_recent(self) -> bool:
+        """Checks if the post is recent."""
+        return None
