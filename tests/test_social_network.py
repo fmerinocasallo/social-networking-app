@@ -21,7 +21,9 @@ def test_social_network_add_duplicate_user():
     social_network = SocialNetwork()
     social_network.add_user("Alice")
     social_network.add_user("Alice")
-    assert social_network.count_users() == 1, "Adding duplicate user should not create new user"
+
+    n_users = social_network.count_users()
+    assert n_users == 1, "Adding duplicate user should not create new user"
 
 def test_social_network_add_post():
     """Checks that users can post messages."""
@@ -32,7 +34,9 @@ def test_social_network_add_post():
     except ValueError:
         raise AssertionError("Posting should be successful") from None
 
-    assert social_network.get_user_posts("Alice") == ["I love the weather today (just now)"], "Post should be visible in user's timeline"
+    posts = social_network.get_user_posts("Alice")
+    expected_posts = ["I love the weather today (just now)"]
+    assert posts == expected_posts, "Post should be visible in user's timeline"
 
 def test_social_network_add_post_nonexistent_user():
     """Checks that posting for a nonexistent user raises ValueError."""
@@ -50,7 +54,9 @@ def test_social_network_follows():
     social_network.add_user("Bob")
     social_network.follows("Alice", "Bob")
 
-    assert social_network.get_following("Alice") == ["Bob"], "User should follow the other user"
+    following = social_network.get_following("Alice")
+    expected_following = ["Bob"]
+    assert following == expected_following, "User should follow the other user"
 
 def test_social_network_follows_nonexistent_user():
     """Checks that following a nonexistent user raises ValueError."""
