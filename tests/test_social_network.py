@@ -34,7 +34,7 @@ def test_social_network_add_post():
     except ValueError:
         raise AssertionError("Posting should be successful") from None
 
-    posts = social_network.get_user_posts("Alice")
+    posts = social_network.get_user_timeline("Alice")
     expected_posts = ["I love the weather today (just now)"]
     assert posts == expected_posts, "Post should be visible in user's timeline"
 
