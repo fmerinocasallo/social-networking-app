@@ -9,3 +9,9 @@ def test_post_init():
     post = Post(content)
     assert post.get_content() == content, "Post should store the given content"
     assert post.is_recent(), "New post should be considered recent"
+
+def test_post_eq():
+    """Checks that two posts are equal if they have the same content and timestamp."""
+    post1 = Post("I love the weather today!")
+    post2 = Post("I love the weather today!")
+    assert post1 == post2
