@@ -33,7 +33,7 @@ class Post:
         self.timestamp = datetime.now().replace(microsecond=0)
 
     def __eq__(self, other: "Post") -> bool:
-        """Checks if two posts are equal."""
+        """Checks if this post is equal to another post."""
         return self.content == other.content and self.timestamp == other.timestamp
 
     def __lt__(self, other: "Post") -> bool:
