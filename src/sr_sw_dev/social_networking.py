@@ -44,6 +44,13 @@ class Post:
         """Returns a string representation of the post."""
         return f"{self.content} ({self._format_elapsed_time()})"
 
+    def signed_copy(self, author: str) -> "Post":
+        """Returns a copy of the post with the author's name."""
+        post = Post(f"{author} - {self.content}")
+        post.timestamp = self.timestamp
+
+        return post
+
     def get_content(self) -> str:
         """Returns the content of the post."""
         return self.content
@@ -153,6 +160,15 @@ class User:
         """Returns the users that the user is following."""
         return self.following
 
+    def get_wall(self) -> list[str]:
+        """Returns the wall of the user."""
+        wall = self.get_posts(signed=True)
+        wall.extend(
+            [post for user in self.following for post in user.get_posts(signed=True)]
+        )
+        wall.sort()
+        return [str(post) for post in wall]
+
 
 class SocialNetwork:
     """
@@ -224,6 +240,23 @@ class SocialNetwork:
             raise ValueError(f"User {name} does not exist")
         else:
             return [user.get_name() for user in self.users[name].get_following()]
+
+    def get_user_wall(self, name: str) -> list[str]:
+        """Returns the wall of the user."""
+        if not self.has_user(name):
+            raise ValueError(f"User {name} does not exist")
+        else:
+            wall = self.users[name].get_posts(signed=True)
+            wall.extend(
+                [
+                    post
+                    for user in self.users[name].get_following()
+                    for post in user.get_posts(signed=True)
+                ]
+            )
+            wall.sort(reverse=True)
+
+            return [str(post) for post in wall]
 
 
 class Application:
@@ -308,9 +341,14 @@ class Application:
                     raise ValueError("Invalid following command: username is empty")
                 else:
                     # We expect a predicate (user to follow)
-                    raise ValueError("Invalid following command: user to follow is empty")
+                    raise ValueError(
+                        "Invalid following command: user to follow is empty"
+                    )
         elif action == "wall":
-            pass
+            if username:
+                return self.social_network.get_user_wall(username)
+            else:
+                raise ValueError("Invalid wall command: username is empty")
         elif self.get_social_network().has_user(command):
             return self.get_social_network().get_user_timeline(command)
         elif len(command.split(" ")) == 1:
