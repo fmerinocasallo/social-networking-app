@@ -236,6 +236,7 @@ class Application:
         self.social_network = SocialNetwork()
         self.commands = {
             "->": "posting",
+            "follows": "following",
         }.copy()
 
     def has_social_network(self) -> bool:
@@ -291,6 +292,8 @@ class Application:
                 else:
                     # We expect a predicate
                     raise ValueError("Invalid posting command: message is empty")
+        elif action == "following":
+            pass
         elif self.get_social_network().has_user(command):
             return self.get_social_network().get_user_posts(command)
         elif len(command.split(" ")) == 1:

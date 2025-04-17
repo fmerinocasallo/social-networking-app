@@ -47,9 +47,6 @@ def test_application_parse_command_reading():
 
     with freeze_time(datetime.now() - timedelta(minutes=1)):
         application.parse_command("Bob -> Good game though.")
-    
-    print(f"Alice's timeline: {application.parse_command('Alice')}")
-    print(f"Bob's timeline: {application.parse_command('Bob')}")
 
     assert application.parse_command("Alice") == ["I love the weather today! (5 minutes ago)"], "Timeline should contain Alice's post"
 
@@ -61,6 +58,14 @@ def test_application_parse_command_reading_nonexistent_user():
 
     with pytest.raises(ValueError, match="Invalid user: Charlie"):
         application.parse_command("Charlie")
+
+def test_application_parse_command_following():
+    """Checks that an application can parse following commands."""
+    application = Application()
+    application.parse_command("Alice -> I love the weather today!")
+    application.parse_command("Charlie -> I'm in New York today! Anyone want to have a coffee?")
+    application.parse_command("Alice follows Bob")
+    assert application.get_social_network().get_following("Alice") == ["Charlie"], "Alice should follow Bob"
 
 def test_application_parse_command_invalid_command():
     """Checks that an application can parse a command with an invalid command."""
