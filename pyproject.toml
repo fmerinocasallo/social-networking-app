@@ -1,0 +1,91 @@
+[project]
+name = "sr-sw-dev"
+dynamic = ["version"]
+authors = [
+    {name = "Francisco Merino-Casallo", email = "francisco.merinocasallo@gmail.com"}
+]
+description = "A package to implement a console-based social networking app."
+dependencies = []
+requires-python = ">= 3.11"
+keywords = ["social"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3.11",
+    "Operating System :: OS Independent",
+    "Topic :: Communications",
+    "Topic :: Communications :: BBS",
+]
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+
+[tool.hatch.version]
+path = "src/sr_sw_dev/__init__.py"
+
+[build-system]
+build-backend = "hatchling.build"
+requires = ["hatchling"]
+
+[tool.pixi.tasks]
+test = "pytest"
+
+[tool.ruff]
+target-version = "py311"
+lint.select = [
+    "E",     # pycodestyle (style errors)
+    "F",     # pyflakes (code correctness)
+    "I",     # isort (import sorting)
+    "UP",    # pyupgrade (modern syntax)
+    "B",     # flake8-bugbear (common bugs and design issues)
+    "C4",    # flake8-comprehensions (comprehension optimizations)
+    "SIM",   # flake8-simplify (simpler constructs)
+    "TID",   # flake8-tidy-imports (import hygiene)
+    "RUF",   # Ruff-native rules
+    "ANN",   # flake8-annotations (type hints)
+    "TCH",   # Ruff's type-checking helpers
+    "D",     # pydocstyle (docstring quality)
+    "S",     # bandit (security checks)
+]
+lint.ignore = [
+    "D212",     # Multi-line summary first line
+    "E501",     # Line too long (Black handles this)
+    "B008",     # Function call in argument defaults (sometimes too strict)
+]
+line-length = 88
+exclude = [
+    ".git",
+    ".ruff_cache",
+    ".venv",
+    "build",
+    "dist",
+    "__pycache__",
+    "tests/__init__.py",
+]
+lint.dummy-variable-rgx = "^_"
+
+[tool.ruff.lint.isort]
+known-first-party = ["sr_sw_dev"]
+force-sort-within-sections = true
+
+[tool.ruff.lint.flake8-annotations]
+suppress-none-returning = true
+suppress-dummy-args = true
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*.py" = ["S101"]
+
+[tool.ruff.format]
+# Like Black, use double quotes for strings.
+quote-style = "double"
+
+# Like Black, indent with spaces, rather than tabs.
+indent-style = "space"
+
+# Like Black, respect magic trailing commas.
+skip-magic-trailing-comma = false
+
+# Like Black, automatically detect the appropriate line ending.
+line-ending = "auto"
