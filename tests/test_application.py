@@ -32,6 +32,14 @@ def test_application_parse_command_posting_empty_message():
     with pytest.raises(ValueError, match="Invalid posting command: message is empty"):
         application.parse_command("Alice ->")
 
+def test_application_parse_command_reading():
+    """Checks that an application can parse a command with an empty message."""
+    application = Application()
+
+    application.parse_command("Alice -> I love the weather today!")
+    timeline = application.parse_command("Alice")
+    assert timeline == ["I love the weather today! (just now)"], "Timeline should contain the post"
+
 def test_application_parse_command_invalid_command():
     """Checks that an application can parse a command with an invalid command."""
     application = Application()

@@ -265,6 +265,8 @@ class Application:
                 else:
                     # We expect a predicate
                     raise ValueError("Invalid posting command: message is empty")
+        elif self.get_social_network().has_user(command):
+            return None
         else:
             # Assume the command is invalid
             raise ValueError(f"Invalid command: {command}")
