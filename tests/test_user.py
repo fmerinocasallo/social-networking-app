@@ -13,3 +13,9 @@ def test_user_eq():
     user1 = User('Alice')
     user2 = User('Alice')
     assert user1 == user2, "Users with same name should be equal"
+
+def test_user_ne():
+    """Checks that the user is not equal to another user with a different name."""
+    user1 = User('Alice')
+    user2 = User('Bob')
+    assert user1 != user2, "Users with different names should not be equal"

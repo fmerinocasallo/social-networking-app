@@ -114,6 +114,20 @@ class User:
         self.name = name
         self.posts = []
 
+    def __eq__(self, other: "User") -> bool:
+        """
+        Checks if two users are equal.
+
+        Args:
+            other:
+                The other user to compare to.
+
+        Returns:
+            bool:
+                True if the users are equal, False otherwise.
+        """
+        return (self.name == other.name) and (self.posts == other.posts)
+
     def get_name(self) -> str:
         """Returns the name of the user."""
         return self.name
