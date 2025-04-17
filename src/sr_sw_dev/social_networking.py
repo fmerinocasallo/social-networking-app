@@ -206,11 +206,19 @@ class SocialNetwork:
 
     def follows(self, name: str, following: str):
         """Adds a user to the user's following list."""
-        pass
+        if not self.has_user(name):
+            raise ValueError(f"User {name} does not exist")
+        elif not self.has_user(following):
+            raise ValueError(f"User {following} does not exist")
+        else:
+            self.users[name].follows(self.users[following])
 
     def get_following(self, name: str) -> list[str]:
         """Returns the users that the user is following."""
-        pass
+        if not self.has_user(name):
+            raise ValueError(f"User {name} does not exist")
+        else:
+            return [user.get_name() for user in self.users[name].get_following()]
 
 class Application:
     """
