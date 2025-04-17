@@ -268,6 +268,9 @@ class Application:
                     raise ValueError("Invalid posting command: message is empty")
         elif self.get_social_network().has_user(command):
             return self.get_social_network().get_user_posts(command)
+        elif len(command.split(" ")) == 1:
+            # Assume the user is trying to read the timeline of a nonexistent user
+            raise ValueError(f"Invalid user: {command}")
         else:
             # Assume the command is invalid
             raise ValueError(f"Invalid command: {command}")

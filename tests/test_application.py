@@ -55,6 +55,13 @@ def test_application_parse_command_reading():
 
     assert application.parse_command("Bob") == ["Good game though. (1 minute ago)", "Damn! We lost! (2 minutes ago)"], "Timeline should contain Bob's posts"
 
+def test_application_parse_command_reading_nonexistent_user():
+    """Checks that an application can parse readings with a nonexistent user."""
+    application = Application()
+
+    with pytest.raises(ValueError, match="Invalid user: Charlie"):
+        application.parse_command("Charlie")
+
 def test_application_parse_command_invalid_command():
     """Checks that an application can parse a command with an invalid command."""
     application = Application()
