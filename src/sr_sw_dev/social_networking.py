@@ -177,9 +177,18 @@ class SocialNetwork:
                 The name of the user.
             post:
                 The post to add.
+
+        Raises:
+            ValueError:
+                If the user does not exist.
         """
-        pass
+        if not self.has_user(name):
+            raise ValueError(f"User {name} does not exist")
+        else:
+            self.users[name].add_post(post)
 
     def get_user_posts(self, name: str) -> list[str]:
         """Returns the posts of the user."""
-        pass
+        if not self.has_user(name):
+            raise ValueError(f"User {name} does not exist")
+        return self.users[name].get_posts()
