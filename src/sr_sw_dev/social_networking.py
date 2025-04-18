@@ -326,30 +326,25 @@ class Application:
                 action = self.commands[cmd]
                 break
 
+        # Execute the command
         if action == "posting":
             if username and predicate:
-                # If the user does not exist, add them to the social network
                 if not self.social_network.has_user(username):
                     self.social_network.add_user(username)
 
-                # Add the post to the user's timeline
                 self.social_network.add_post(username, predicate)
             else:
                 if not username:
-                    # We expect a username
                     raise ValueError("Invalid posting command: username is empty")
                 else:
-                    # We expect a predicate
                     raise ValueError("Invalid posting command: message is empty")
         elif action == "following":
             if username and predicate:
                 self.social_network.follows(username, predicate)
             else:
                 if not username:
-                    # We expect a username (subject)
                     raise ValueError("Invalid following command: username is empty")
                 else:
-                    # We expect a predicate (user to follow)
                     raise ValueError(
                         "Invalid following command: user to follow is empty"
                     )
@@ -359,6 +354,7 @@ class Application:
             else:
                 raise ValueError("Invalid wall command: username is empty")
         elif self.get_social_network().has_user(command):
+            # It is a reading command
             return self.get_social_network().get_user_timeline(command)
         elif len(command.split(" ")) == 1:
             # Assume the user is trying to read the timeline of a nonexistent user
