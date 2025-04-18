@@ -362,3 +362,22 @@ class Application:
         else:
             # Assume the command is invalid
             raise ValueError(f"Invalid command: {command}")
+
+
+if __name__ == "__main__":
+    app = Application()
+
+    while True:
+        try:
+            command = input("> ")
+            if command.lower() == "exit":
+                break
+            else:
+                result = app.parse_command(command)
+                if result:
+                    print("\n".join(result))
+        except (KeyboardInterrupt, EOFError):
+            print("Exit")
+            break
+        except ValueError as e:
+            print(e)
