@@ -1,4 +1,4 @@
-# Clarity – Senior Developer Code Test
+# Social Networking Application
 
 ## Table of contents
 1. [:memo: Challenge description](#desc)
@@ -6,8 +6,9 @@
 3. [:toolbox: Solution](#solution)
 4. [:package: Installation](#install)
 5. [:white_check_mark: Testing](#tests)
-6. [:hammer: Future Work](#future-work)
-7. [:memo: License](#license)
+6. [:robot: Continuous Integration](#ci)
+7. [:hammer: Future Work](#future-work)
+8. [:memo: License](#license)
 
     <div id="desc"></div>
 
@@ -231,6 +232,21 @@ This means that I have written the tests before the code.
 This is a great practice because it forces you to think about the requirements
 and the expected behavior of the code before you actually write it.
 
+<div id="ci"></div>
+
+## :robot: Continuous Integration
+This project uses [GitHub Actions](https://docs.github.com/en/actions)
+to ensure code quality and monitor the social networking application's real-world performance:
+
+**Workflow**: [`.github/workflows/ci.yml`](.github/workflows/ci.yml)
+
+**When**: On every push and pull request to the main branch.
+
+**What**: Runs the full test suite to ensure that no breaking changes
+are introduced before merging.
+
+**Why**: This guarantees that all code in main is stable and passes all tests.
+
 <div id="future-work"></div>
 
 ## :hammer: Future Work
@@ -239,15 +255,15 @@ Future work could focus on the following aspects:
 
 1. I could leverage **short-lived feature branches** to keep track of my progress during the TDD process (until I got the tests to pass)[^1][^2].
 
-2. Short-lived branches would allow me to set up a **CI pipeline**
+~~2. Short-lived branches would allow me to set up a **CI pipeline**
 to run the tests automatically in the main branch,
 blocking merges into the main branch until the tests pass[^3][^4].
 This would:
     - Catch bugs early, before they are merged into the main branch.
-    - Ensure the code in the main branch is always in a working state.
+    - Ensure the code in the main branch is always in a working state.~~
 
-3. I could leverage **pre-commit hooks** to run ruff linting and formatting
-before committing my changes to ensure code quality[^5].
+~~3. I could leverage **pre-commit hooks** to run ruff linting and formatting
+before committing my changes to ensure code quality[^5].~~
 
 4. The proposed implementation of the `Application` class could be improved
 for future extensibility.
