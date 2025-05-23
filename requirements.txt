@@ -1,0 +1,8 @@
+build==1.2.2.post1
+freezegun==1.5.0
+hatchling
+pyproject-hooks==1.2.0
+pytest==8.3.5
+pytest-cov==6.1.1
+python-dateutil==2.9.0.post0
+ruff==0.11.5 
