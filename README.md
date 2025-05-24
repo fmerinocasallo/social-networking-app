@@ -6,9 +6,10 @@
 3. [:toolbox: Solution](#solution)
 4. [:package: Installation](#install)
 5. [:white_check_mark: Testing](#tests)
-6. [:robot: Continuous Integration](#ci)
-7. [:hammer: Future Work](#future-work)
-8. [:memo: License](#license)
+6. [:scroll: Logging](#logging)
+7. [:robot: Continuous Integration](#ci)
+8. [:hammer: Future Work](#future-work)
+9. [:memo: License](#license)
 
     <div id="desc"></div>
 
@@ -27,7 +28,7 @@ Unset
 > Bob -> Good game though.
 ```
 
-**Reading**: Anyone can view anyone’s timeline
+**Reading**: Anyone can view anyone's timeline
 ```
 Unset
 > Alice
@@ -37,7 +38,7 @@ Good game though. (1 minute ago)
 Damn! We lost! (2 minutes ago)
 ```
 
-**Following**: Anyone can subscribe to anyone’s timelines,
+**Following**: Anyone can subscribe to anyone's timelines,
 and view an aggregated list of all subscriptions.
 
 ```
@@ -66,7 +67,7 @@ Alice - I love the weather today (5 minutes ago)
 
 - The application must use the console for input and output.
 - Users submit commands to the application.
-- Commands always start with the user’s name.
+- Commands always start with the user's name.
 - There are four types commands:
     - **posting**: user name -> message
     - **reading**: user name
@@ -77,7 +78,7 @@ Alice - I love the weather today (5 minutes ago)
 
 - **Focus on Core Logic**:
 We want to assess your problem-solving skills and coding style.
-Therefore, please keep the implementation focused on the application’s core logic.
+Therefore, please keep the implementation focused on the application's core logic.
 There's no need to use external frameworks or databases for this exercise.
 Simple, in-memory data structures are perfectly acceptable.
 - **Emphasis on Testing**:
@@ -231,6 +232,24 @@ I have applied [**Test-Driven Development (TDD)**](https://en.wikipedia.org/wiki
 This means that I have written the tests before the code.
 This is a great practice because it forces you to think about the requirements
 and the expected behavior of the code before you actually write it.
+
+<div id="logging"></div>
+
+## :scroll: Logging
+
+This project uses Python's built-in `logging` module to provide detailed insights into the application's operation. While there are more feature-rich alternatives like [Loguru](https://loguru.readthedocs.io/en/stable/), we opted for the standard library's `logging` module to:
+
+- Minimize external dependencies
+- Keep the implementation simple and maintainable
+- Leverage Python's built-in logging capabilities
+
+The logging configuration is defined in `config/logger.ini` and includes:
+- Console output for immediate feedback (INFO level)
+- File output for detailed debugging (DEBUG level)
+- Formatted timestamps and log levels
+- Separate loggers for different components
+
+Example log entries can be found in `logs/social_networking.log.example`.
 
 <div id="ci"></div>
 
