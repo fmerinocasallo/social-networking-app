@@ -8,6 +8,7 @@ The application allows users to:
 - read the wall of another user (e.g. "Alice wall").
 """
 
+import configparser
 from datetime import datetime
 from functools import total_ordering
 import logging
@@ -21,12 +22,17 @@ from src.sr_sw_dev import paths
 # Create log directory if it doesn't exist
 os.makedirs(paths.log_dir, exist_ok=True)
 
-# Read the logging configuration
-with open(paths.config_dir / "logger.ini") as f:
-    config = f.read().format(log_dir=paths.log_dir)
+# Read and format the logging configuration
+config = configparser.ConfigParser()
+config.read(paths.config_dir / "logger.ini")
+
+# Format the log directory in the file handler args
+args = config.get("handler_file", "args")
+args = args.format(log_dir=paths.log_dir)
+config.set("handler_file", "args", args)
 
 # Apply the logging configuration
-logging.config.fileConfig(config)
+logging.config.fileConfig(config, defaults={"log_dir": paths.log_dir})
 
 log = logging.getLogger(__name__)
 
