@@ -1,6 +1,7 @@
 build==1.2.2.post1
 freezegun==1.5.0
 hatchling
+pydantic==2.11.4
 pyproject-hooks==1.2.0
 pytest==8.3.5
 pytest-cov==6.1.1
