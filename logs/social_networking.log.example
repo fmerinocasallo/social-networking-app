@@ -1,0 +1,39 @@
+2025-05-24 08:59:35 - __main__ - DEBUG - Social network initialized
+2025-05-24 08:59:53 - __main__ - DEBUG - Posting command: Alice I love the weather today
+2025-05-24 08:59:53 - __main__ - DEBUG - User initialized: Alice
+2025-05-24 08:59:53 - __main__ - DEBUG - User added to social network: Alice
+2025-05-24 08:59:53 - __main__ - DEBUG - Post initialized: I love the weather today (2025-05-24 08:59:53)
+2025-05-24 08:59:53 - __main__ - DEBUG - Post added to Alice's timeline: I love the weather today
+2025-05-24 08:59:53 - __main__ - DEBUG - Post added to Alice's timeline in social network: I love the weather today
+2025-05-24 08:59:59 - __main__ - DEBUG - Posting command: Bob Damn! We lost!
+2025-05-24 08:59:59 - __main__ - DEBUG - User initialized: Bob
+2025-05-24 08:59:59 - __main__ - DEBUG - User added to social network: Bob
+2025-05-24 08:59:59 - __main__ - DEBUG - Post initialized: Damn! We lost! (2025-05-24 08:59:59)
+2025-05-24 08:59:59 - __main__ - DEBUG - Post added to Bob's timeline: Damn! We lost!
+2025-05-24 08:59:59 - __main__ - DEBUG - Post added to Bob's timeline in social network: Damn! We lost!
+2025-05-24 09:00:04 - __main__ - DEBUG - Posting command: Bob Good game though.
+2025-05-24 09:00:04 - __main__ - DEBUG - Post initialized: Good game though. (2025-05-24 09:00:04)
+2025-05-24 09:00:04 - __main__ - DEBUG - Post added to Bob's timeline: Good game though.
+2025-05-24 09:00:04 - __main__ - DEBUG - Post added to Bob's timeline in social network: Good game though.
+2025-05-24 09:00:10 - __main__ - DEBUG - Reading command: Alice
+2025-05-24 09:00:14 - __main__ - DEBUG - Reading command: Bob
+2025-05-24 09:00:22 - __main__ - DEBUG - Posting command: Charlie I'm in New York today! Anyone want to have a coffee?
+2025-05-24 09:00:22 - __main__ - DEBUG - User initialized: Charlie
+2025-05-24 09:00:22 - __main__ - DEBUG - User added to social network: Charlie
+2025-05-24 09:00:22 - __main__ - DEBUG - Post initialized: I'm in New York today! Anyone want to have a coffee? (2025-05-24 09:00:22)
+2025-05-24 09:00:22 - __main__ - DEBUG - Post added to Charlie's timeline: I'm in New York today! Anyone want to have a coffee?
+2025-05-24 09:00:22 - __main__ - DEBUG - Post added to Charlie's timeline in social network: I'm in New York today! Anyone want to have a coffee?
+2025-05-24 09:00:26 - __main__ - DEBUG - Following command: Charlie Alice
+2025-05-24 09:00:26 - __main__ - DEBUG - Charlie follows Alice
+2025-05-24 09:00:26 - __main__ - DEBUG - Charlie follows Alice in social network
+2025-05-24 09:00:29 - __main__ - DEBUG - Wall command: Charlie
+2025-05-24 09:00:29 - __main__ - DEBUG - Post initialized: Charlie - I'm in New York today! Anyone want to have a coffee? (2025-05-24 09:00:29)
+2025-05-24 09:00:29 - __main__ - DEBUG - Post initialized: Alice - I love the weather today (2025-05-24 09:00:29)
+2025-05-24 09:00:37 - __main__ - DEBUG - Following command: Charlie Bob
+2025-05-24 09:00:37 - __main__ - DEBUG - Charlie follows Bob
+2025-05-24 09:00:37 - __main__ - DEBUG - Charlie follows Bob in social network
+2025-05-24 09:00:40 - __main__ - DEBUG - Wall command: Charlie
+2025-05-24 09:00:40 - __main__ - DEBUG - Post initialized: Charlie - I'm in New York today! Anyone want to have a coffee? (2025-05-24 09:00:40)
+2025-05-24 09:00:40 - __main__ - DEBUG - Post initialized: Alice - I love the weather today (2025-05-24 09:00:40)
+2025-05-24 09:00:40 - __main__ - DEBUG - Post initialized: Bob - Damn! We lost! (2025-05-24 09:00:40)
+2025-05-24 09:00:40 - __main__ - DEBUG - Post initialized: Bob - Good game though. (2025-05-24 09:00:40)

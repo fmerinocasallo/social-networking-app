@@ -10,8 +10,25 @@ The application allows users to:
 
 from datetime import datetime
 from functools import total_ordering
+import logging
+import logging.config
+import os
 
 from dateutil.relativedelta import relativedelta
+
+from src.sr_sw_dev import paths
+
+# Create log directory if it doesn't exist
+os.makedirs(paths.log_dir, exist_ok=True)
+
+# Read the logging configuration
+with open(paths.config_dir / "logger.ini") as f:
+    config = f.read().format(log_dir=paths.log_dir)
+
+# Apply the logging configuration
+logging.config.fileConfig(config)
+
+log = logging.getLogger(__name__)
 
 
 @total_ordering
@@ -36,6 +53,8 @@ class Post:
         """
         self.content = content
         self.timestamp = datetime.now().replace(microsecond=0)
+
+        log.debug(f"Post initialized: {self.content} ({self.timestamp})")
 
     def __eq__(self, other: "Post") -> bool:
         """Checks if this post is equal to another post."""
@@ -122,6 +141,8 @@ class User:
         self.posts = []
         self.following = []
 
+        log.debug(f"User initialized: {self.name}")
+
     def __eq__(self, other: "User") -> bool:
         """Checks if two users are equal."""
         return (self.name == other.name) and (self.posts == other.posts)
@@ -157,6 +178,8 @@ class User:
         """Adds a post to the user's timeline."""
         self.posts.append(Post(post))
 
+        log.debug(f"Post added to {self.name}'s timeline: {post}")
+
     def get_timeline(self) -> list[str]:
         """Returns the timeline of the user."""
         return [str(post) for post in self.get_posts(signed=False)]
@@ -164,6 +187,8 @@ class User:
     def follows(self, user: "User"):
         """Adds a user to the user's following list."""
         self.following.append(user)
+
+        log.debug(f"{self.name} follows {user.name}")
 
     def get_following(self) -> list["User"]:
         """Returns the users that the user is following."""
@@ -192,6 +217,8 @@ class SocialNetwork:
         """Initializes a social network."""
         self.users = {}
 
+        log.debug("Social network initialized")
+
     def has_users(self) -> bool:
         """Checks if the social network has any users."""
         return bool(self.users)
@@ -199,6 +226,8 @@ class SocialNetwork:
     def add_user(self, name: str):
         """Adds a user to the social network."""
         self.users[name] = User(name)
+
+        log.debug(f"User added to social network: {name}")
 
     def has_user(self, name: str) -> bool:
         """Checks if the social network has a user with the given name."""
@@ -227,6 +256,8 @@ class SocialNetwork:
         else:
             self.users[name].add_post(post)
 
+        log.debug(f"Post added to {name}'s timeline in social network: {post}")
+
     def get_user_timeline(self, name: str) -> list[str]:
         """Returns the timeline of the user."""
         if not self.has_user(name):
@@ -242,6 +273,8 @@ class SocialNetwork:
             raise ValueError(f"User {following} does not exist")
         else:
             self.users[name].follows(self.users[following])
+
+            log.debug(f"{name} follows {following} in social network")
 
     def get_following(self, name: str) -> list[str]:
         """Returns the users that the user is following."""
@@ -328,6 +361,7 @@ class Application:
 
         # Execute the command
         if action == "posting":
+            log.debug(f"Posting command: {username} {predicate}")
             if username and predicate:
                 if not self.social_network.has_user(username):
                     self.social_network.add_user(username)
@@ -339,6 +373,7 @@ class Application:
                 else:
                     raise ValueError("Invalid posting command: message is empty")
         elif action == "following":
+            log.debug(f"Following command: {username} {predicate}")
             if username and predicate:
                 self.social_network.follows(username, predicate)
             else:
@@ -349,18 +384,22 @@ class Application:
                         "Invalid following command: user to follow is empty"
                     )
         elif action == "wall":
+            log.debug(f"Wall command: {username}")
             if username:
                 return self.social_network.get_user_wall(username)
             else:
                 raise ValueError("Invalid wall command: username is empty")
         elif self.get_social_network().has_user(command):
             # It is a reading command
+            log.debug(f"Reading command: {command}")
             return self.get_social_network().get_user_timeline(command)
         elif len(command.split(" ")) == 1:
             # Assume the user is trying to read the timeline of a nonexistent user
+            log.error(f"Invalid user: {command}")
             raise ValueError(f"Invalid user: {command}")
         else:
             # Assume the command is invalid
+            log.error(f"Invalid command: {command}")
             raise ValueError(f"Invalid command: {command}")
 
 
