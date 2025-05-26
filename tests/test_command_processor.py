@@ -1,6 +1,6 @@
 """This module provides tests for the CommandProcessor class."""
 
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from freezegun import freeze_time
 import pytest
@@ -85,12 +85,12 @@ def test_command_processor_execute_post_command():
     social_network = SocialNetwork()
     processor = CommandProcessor(social_network)
 
-    with freeze_time(datetime.now() - datetime.timedelta(minutes=2)):
+    with freeze_time(datetime.now() - timedelta(minutes=2)):
         command = "Alice -> I love the weather today!"
         processor.execute_command(command)
 
-        timeline = processor.get_social_network().get_user_timeline("Alice")
-        assert timeline == ["I love the weather today! (2 minutes ago)"]
+    timeline = processor.get_social_network().get_user_timeline("Alice")
+    assert timeline == ["I love the weather today! (2 minutes ago)"]
 
 
 def test_command_processor_execute_follow_command():
@@ -115,10 +115,10 @@ def test_command_processor_execute_wall_command():
     processor = CommandProcessor(social_network)
 
     # Create users and posts
-    with freeze_time(datetime.now() - datetime.timedelta(minutes=5)):
+    with freeze_time(datetime.now() - timedelta(minutes=5)):
         processor.execute_command("Alice -> I love the weather today!")
 
-    with freeze_time(datetime.now() - datetime.timedelta(minutes=2)):
+    with freeze_time(datetime.now() - timedelta(minutes=2)):
         processor.execute_command("Bob -> Damn! We lost!")
 
     processor.execute_command("Alice follows Bob")
@@ -126,8 +126,8 @@ def test_command_processor_execute_wall_command():
     # Execute wall command
     wall = processor.execute_command("Alice wall")
     expected_wall = [
-        "Alice - I love the weather today! (5 minutes ago)",
         "Bob - Damn! We lost! (2 minutes ago)",
+        "Alice - I love the weather today! (5 minutes ago)",
     ]
     assert wall == expected_wall
 
@@ -138,7 +138,7 @@ def test_command_processor_execute_timeline_command():
     processor = CommandProcessor(social_network)
 
     # Create post
-    with freeze_time(datetime.now() - datetime.timedelta(minutes=8)):
+    with freeze_time(datetime.now() - timedelta(minutes=8)):
         processor.execute_command("Alice -> I love the weather today!")
 
     # Execute timeline command

@@ -321,44 +321,41 @@ class SocialNetwork:
             return [str(post) for post in wall]
 
 
-class Application:
+class CommandProcessor:
     """
-    A social networking application.
+    A command processor for the social network.
 
     Attributes:
         social_network:
-            The social network of the application.
-        commands:
-            The commands of the application.
+            The social network to process commands for.
     """
 
-    def __init__(self):
-        """Initializes a social networking application."""
-        self.social_network = SocialNetwork()
-        self.commands = {
-            "->": "post",
-            "follows": "follow",
-            "wall": "wall",
-        }.copy()
+    def __init__(self, social_network: SocialNetwork):
+        """
+        Initializes a command processor.
 
-    def has_social_network(self) -> bool:
-        """Checks if the application has a social network."""
-        return bool(self.social_network)
+        Args:
+            social_network:
+                The social network to process commands for.
+        """
+        self.social_network = social_network
+
+        log.debug("Command processor initialized")
 
     def get_social_network(self) -> SocialNetwork:
-        """Returns the social network of the application."""
+        """Returns the social network of the command processor."""
         return self.social_network
 
-    def has_commands(self) -> bool:
-        """Checks if the application has commands to execute."""
-        return bool(self.commands)
-
-    def parse_command(self, command: str) -> list[str] | None:
-        """Parses and executes a command.
+    def parse_command(self, command: str) -> CommandModel:
+        """
+        Parses a command.
 
         Args:
             command:
-                The command to parse and execute.
+                The command to parse.
+
+        Returns:
+            The parsed command model.
 
         Raises:
             ValueError:
@@ -369,54 +366,111 @@ class Application:
 
         # Check if the command is valid
         username, action, target = None, None, None
-        for cmd in self.commands:
-            if cmd in command:
-                username, target = command.split(cmd)
 
-                # Strip whitespace from username and predicate
-                username = username.strip()
-                target = target.strip()
-                action = self.commands[cmd]
-                break
-
-        print(f"username: {username}, action: {action}, target: {target}")
-
-        # If no command found, treat as a timeline command
-        if not action:
+        if "->" in command:
+            username, target = command.split("->")
+            action = "post"
+        elif "follows" in command:
+            username, target = command.split("follows")
+            action = "follow"
+        elif "wall" in command:
+            username, _ = command.split("wall")
+            action = "wall"
+            target = None
+        else:
             username = command
             action = "timeline"
+            target = None
+
+        # Strip whitespace from username and target
+        username = username.strip()
+        target = target.strip() if target else None
 
         # Validate command using Pydantic model
-        cmd = CommandModel(
+        return CommandModel(
             username=username,
             action=action,
             target=target,
         )
 
+    def execute_command(self, command: str) -> list[str] | None:
+        """
+        Executes a command.
+
+        Args:
+            command:
+                The command to execute.
+
+        Returns:
+            The result of the command execution, if any.
+
+        Raises:
+            ValueError:
+                If the command is invalid or if the user does not exist.
+        """
+        # Parse command
+        cmd = self.parse_command(command)
+
         # Execute command
         if cmd.action == "post":
-            log.debug(f"Posting command: {cmd.username} {cmd.target}")
             if not self.social_network.has_user(cmd.username):
                 self.social_network.add_user(cmd.username)
             self.social_network.add_post(cmd.username, cmd.target)
         elif cmd.action == "follow":
-            log.debug(f"Following command: {cmd.username} {cmd.target}")
             self.social_network.follows(cmd.username, cmd.target)
         elif cmd.action == "wall":
-            log.debug(f"Wall command: {cmd.username}")
             return self.social_network.get_user_wall(cmd.username)
         elif cmd.action == "timeline":
             if self.social_network.has_user(cmd.username):
-                log.debug(f"Reading command: {cmd.username}")
                 return self.social_network.get_user_timeline(cmd.username)
             else:
                 raise ValueError(f"Invalid user: user {cmd.username} does not exist")
         else:
-            # This block is unreachable due to Pydantic validation in CommandModel.
-            # Any invalid command will be caught by the model's validation before reaching this point.
-            # Kept for clarity and documentation purposes.
-            log.error(f"Invalid command: {command}")
+            # This block is unreachable due to Pydantic validation in CommandModel
             raise ValueError(f"Invalid command: {command}")
+
+
+class Application:
+    """
+    A social networking application.
+
+    Attributes:
+        social_network:
+            The social network of the application.
+        command_processor:
+            The command processor of the application.
+    """
+
+    def __init__(self):
+        """Initializes a social networking application."""
+        self.social_network = SocialNetwork()
+        self.command_processor = CommandProcessor(self.social_network)
+
+        log.debug("Application initialized")
+
+    def has_social_network(self) -> bool:
+        """Checks if the application has a social network."""
+        return bool(self.social_network)
+
+    def get_social_network(self) -> SocialNetwork:
+        """Returns the social network of the application."""
+        return self.social_network
+
+    def parse_command(self, command: str) -> list[str] | None:
+        """Parses and executes a command.
+
+        Args:
+            command:
+                The command to parse and execute.
+
+        Returns:
+            The result of the command execution, if any.
+
+        Raises:
+            ValueError:
+                If the command is invalid.
+        """
+        return self.command_processor.execute_command(command)
 
 
 if __name__ == "__main__":
