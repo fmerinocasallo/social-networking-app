@@ -1,16 +1,11 @@
 [project]
-name = "sr-sw-dev"
+name = "social-network"
 dynamic = ["version"]
 authors = [
     {name = "Francisco Merino-Casallo", email = "francisco.merinocasallo@gmail.com"}
 ]
 description = "A package to implement a console-based social networking app."
 dependencies = [
-    "pytest>=8.3.5,<9",
-    "pytest-cov>=6.1.1,<7",
-    "pytest-mock>=3.14.0,<4",
-    "ruff>=0.11.5,<0.12",
-    "freezegun>=1.5.0,<2",
     "pydantic>=2.11.4,<3",
 ]
 requires-python = ">= 3.12"
@@ -27,14 +22,25 @@ license = "MIT"
 license-files = ["LICEN[CS]E*"]
 
 [tool.hatch.version]
-path = "src/sr_sw_dev/__init__.py"
+path = "src/social_network/__init__.py"
 
 [build-system]
 build-backend = "hatchling.build"
 requires = ["hatchling"]
 
 [tool.pixi.tasks]
-test = "pytest"
+test = "pytest tests --cov=src/social_network --cov-report=term-missing"
+lint = "ruff check ."
+format = "ruff format ."
+
+[tool.pixi.dependencies]
+python = "3.12"
+pytest = ">=8.3.5,<9"
+pytest-cov = ">=6.1.1,<7"
+pytest-mock = ">=3.14.0,<4"
+ruff = ">=0.11.5,<0.12"
+freezegun = ">=1.5.0,<2"
+pre-commit = ">=3.6.2,<4"
 
 [tool.ruff]
 target-version = "py312"
@@ -71,7 +77,7 @@ exclude = [
 lint.dummy-variable-rgx = "^_"
 
 [tool.ruff.lint.isort]
-known-first-party = ["sr_sw_dev"]
+known-first-party = ["social_network"]
 force-sort-within-sections = true
 
 [tool.ruff.lint.flake8-annotations]
