@@ -132,7 +132,7 @@ Note that the proposed solution also follows the [**Single Responsibility Princi
 
 This makes the code more maintainable, testable, and easier to extend.
 
-The source code of the proposed solution is located in `src/social_network/`.
+The source code of the proposed solution is located in [src/social_network/](src/social_network/).
 
 Here's a brief description of each class in the social networking
 application:
@@ -209,7 +209,7 @@ to ensure that my social networking application behaves as expected.
 `pytest` makes it easy to write small and readable tests,
 and is also well-equipped to grow in complexity if needed.
 
-See `tests/` for more details about the written tests.
+See [tests/](tests/) for more details about the written tests.
 
 To automatically run all the tests included in this project,
 execute the following shell command from the main directory:
@@ -271,8 +271,8 @@ The following validation rules are enforced:
   - Must have a non-empty name
   - Must have valid following relationships
 
-These validation rules are implemented using Pydantic models in `src/social_network/models.py`
-and tested in `tests/test_models.py`.
+These validation rules are implemented using Pydantic models in [src/social_network/models.py](src/social_network/models.py)
+and tested in [tests/test_models.py](tests/test_models.py).
 
 For other validation use cases, consider these alternatives:
 - [Pandera](https://union.ai/pandera): Best for validating dataframes or databases in mixed teams
@@ -289,13 +289,13 @@ This project uses Python's built-in `logging` module to provide detailed insight
 - Keep the implementation simple and maintainable
 - Leverage Python's built-in logging capabilities
 
-The logging configuration is defined in `config/logger.ini` and includes:
+The logging configuration is defined in [config/logger.ini](config/logger.ini) and includes:
 - Console output for immediate feedback (INFO level)
 - File output for detailed debugging (DEBUG level)
 - Formatted timestamps and log levels
 - Separate loggers for different components
 
-Example log entries can be found in `logs/social_networking.log.example`.
+Example log entries can be found in [logs/social_networking.log.example](logs/social_networking.log.example).
 
 <div id="ci"></div>
 
@@ -303,7 +303,7 @@ Example log entries can be found in `logs/social_networking.log.example`.
 This project uses [GitHub Actions](https://docs.github.com/en/actions)
 to ensure code quality and monitor the social networking application's real-world performance:
 
-**Workflow**: [`.github/workflows/ci.yml`](.github/workflows/ci.yml)
+**Workflow**: [.github/workflows/ci.yml](.github/workflows/ci.yml)
 
 **When**: On every push and pull request to the main branch.
 
@@ -316,25 +316,12 @@ are introduced before merging.
 
 ## :hammer: Future Work
 
-Future work could focus on the following aspects:
+All planned improvements have been completed:
 
-1. I could leverage **short-lived feature branches** to keep track of my progress during the TDD process (until I got the tests to pass)[^1][^2].
-
-~~2. Short-lived branches would allow me to set up a **CI pipeline**
-to run the tests automatically in the main branch,
-blocking merges into the main branch until the tests pass[^3][^4].
-This would:
-    - Catch bugs early, before they are merged into the main branch.
-    - Ensure the code in the main branch is always in a working state.~~
-
-~~3. I could leverage **pre-commit hooks** to run ruff linting and formatting
-before committing my changes to ensure code quality[^5].~~
-
-4. The proposed implementation of the `Application` class could be improved
-for future extensibility.
-For instance, it currently hardcodes the available commands.
-However, the current implementation is already flexible enough to support
-new commands without breaking existing functionality.
+- :white_check_mark: Using short-lived feature branches for development [^1][^2]
+- :white_check_mark: Setting up CI pipeline with GitHub Actions [^3][^4]
+- :white_check_mark: Implementing pre-commit hooks with ruff [^5]
+- :white_check_mark: Improving the Application class for better extensibility
 
 <div id="license"></div>
 
@@ -361,3 +348,4 @@ https://docs.astral.sh/ruff/integrations/#github-actions
 [^5]: See Ruff official documentation for more details about
 integrating Ruff with pre-commit hooks (accessed on 2025-04-18):
 https://docs.astral.sh/ruff/integrations/#pre-commit
+
