@@ -6,10 +6,11 @@
 3. [:toolbox: Solution](#solution)
 4. [:package: Installation](#install)
 5. [:white_check_mark: Testing](#tests)
-6. [:scroll: Logging](#logging)
-7. [:robot: Continuous Integration](#ci)
-8. [:hammer: Future Work](#future-work)
-9. [:memo: License](#license)
+6. [:shield: Data Validation](#validation)
+7. [:scroll: Logging](#logging)
+8. [:robot: Continuous Integration](#ci)
+9. [:hammer: Future Work](#future-work)
+10. [:memo: License](#license)
 
     <div id="desc"></div>
 
@@ -232,6 +233,51 @@ I have applied [**Test-Driven Development (TDD)**](https://en.wikipedia.org/wiki
 This means that I have written the tests before the code.
 This is a great practice because it forces you to think about the requirements
 and the expected behavior of the code before you actually write it.
+
+<div id="validation"></div>
+
+## :shield: Data Validation
+
+Software tests check that the functions that you write behave correctly.
+Conversely, data validation ensures that the input data to your functions
+satisfy the assumptions from the data processing functions you write.
+
+You should automatically and continuously run tests to check your code.
+Likewise, you should constantly ensure the input data from your functions
+meet the assumptions you possess about them.
+
+This project uses [Pydantic](https://docs.pydantic.dev/latest/) for data validation
+because we are validating structured data from user commands,
+which is similar to validating user input from an API or form.
+Pydantic is particularly well-suited for this use case as it:
+- Provides clear validation error messages
+- Integrates well with Python's type hints
+- Has excellent performance for structured data validation
+- Is widely used in the Python ecosystem
+
+The following validation rules are enforced:
+
+- Commands:
+  - Must have a valid username
+  - Must have a valid action (post, follow, wall, timeline)
+  - Must have a valid target for post and follow actions
+
+- Posts:
+  - Must have non-empty content
+  - Must have a valid timestamp
+  - Must have a valid author
+
+- Users:
+  - Must have a non-empty name
+  - Must have valid following relationships
+
+These validation rules are implemented using Pydantic models in `src/sr_sw_dev/models.py`
+and tested in `tests/test_models.py`.
+
+For other validation use cases, consider these alternatives:
+- [Pandera](https://union.ai/pandera): Best for validating dataframes or databases in mixed teams
+- [Great Expectations](https://greatexpectations.io): Ideal for production environments with automated workflows
+- [Pointblank](https://rich-iannone.github.io/pointblank/): A promising new tool for data validation
 
 <div id="logging"></div>
 
