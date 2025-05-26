@@ -5,20 +5,23 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from freezegun import freeze_time
 
+from src.sr_sw_dev.models import PostModel
 from src.sr_sw_dev.social_networking import Post
 
 
 def test_post_init():
     """Checks that a post is initialized correctly."""
     content = "I love the weather today!"
-    post = Post(content)
+    validated_post = PostModel(content=content, author="Alice")
+    post = Post(validated_post)
     assert post.get_content() == content, "Post should store the given content"
     assert post.is_recent(), "New post should be considered recent"
 
 
 def test_post_is_recent():
     """Checks that a post is recent if the timestamp is within the last minute."""
-    post = Post("I love the weather today!")
+    validated_post = PostModel(content="I love the weather today!", author="Alice")
+    post = Post(validated_post)
     assert post.is_recent(), "New post should be considered recent"
     with freeze_time(datetime.now() + relativedelta(minutes=5)):
         assert not post.is_recent(), (
@@ -28,24 +31,29 @@ def test_post_is_recent():
 
 def test_post_eq():
     """Checks that two posts are equal if they have the same content and timestamp."""
-    post1 = Post("I love the weather today!")
-    post2 = Post("I love the weather today!")
+    validated_post1 = PostModel(content="I love the weather today!", author="Alice")
+    validated_post2 = PostModel(content="I love the weather today!", author="Alice")
+    post1 = Post(validated_post1)
+    post2 = Post(validated_post2)
     assert post1 == post2
 
 
 def test_post_lt():
     """Checks that a post is less than another post if it has an earlier timestamp."""
     with freeze_time(datetime.now() + relativedelta(seconds=5)):
-        post1 = Post("I love the weather today!")
+        validated_post1 = PostModel(content="I love the weather today!", author="Alice")
+        post1 = Post(validated_post1)
 
     with freeze_time(datetime.now() + relativedelta(seconds=10)):
-        post2 = Post("I love the weather today!")
+        validated_post2 = PostModel(content="I love the weather today!", author="Alice")
+        post2 = Post(validated_post2)
         assert post1 < post2
 
 
 def test_post_str():
     """Checks that a post is converted to a string correctly."""
-    post = Post("I love the weather today!")
+    post_model = PostModel(content="I love the weather today!", author="Alice")
+    post = Post(post_model)
     assert str(post) == "I love the weather today! (just now)"
 
     with freeze_time(datetime.now() + relativedelta(seconds=5)):

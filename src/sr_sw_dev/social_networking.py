@@ -18,6 +18,7 @@ import os
 from dateutil.relativedelta import relativedelta
 
 from src.sr_sw_dev import paths
+from src.sr_sw_dev.models import CommandModel, PostModel, UserModel
 
 # Create log directory if it doesn't exist
 os.makedirs(paths.log_dir, exist_ok=True)
@@ -49,16 +50,16 @@ class Post:
             The timestamp of the post.
     """
 
-    def __init__(self, content: str):
+    def __init__(self, post_model: PostModel):
         """
         Initializes a post.
 
         Args:
-            content:
-                The content of the post.
+            post_model:
+                The validated post model.
         """
-        self.content = content
-        self.timestamp = datetime.now().replace(microsecond=0)
+        self.content = post_model.content
+        self.timestamp = post_model.timestamp
 
         log.debug(f"Post initialized: {self.content} ({self.timestamp})")
 
@@ -76,7 +77,7 @@ class Post:
 
     def signed_copy(self, author: str) -> "Post":
         """Returns a copy of the post with the author's name."""
-        post = Post(f"{author} - {self.content}")
+        post = Post(PostModel(content=f"{author} - {self.content}", author=author))
         post.timestamp = self.timestamp
 
         return post
@@ -135,15 +136,15 @@ class User:
             The users that the user is following.
     """
 
-    def __init__(self, name: str):
+    def __init__(self, user_model: UserModel):
         """
         Initializes a user.
 
         Args:
-            name:
-                The name of the user.
+            user_model:
+                The validated user model.
         """
-        self.name = name
+        self.name = user_model.name
         self.posts = []
         self.following = []
 
@@ -180,11 +181,11 @@ class User:
 
         return posts
 
-    def add_post(self, post: str):
+    def add_post(self, post: Post):
         """Adds a post to the user's timeline."""
-        self.posts.append(Post(post))
+        self.posts.append(post)
 
-        log.debug(f"Post added to {self.name}'s timeline: {post}")
+        log.debug(f"Post added to {self.name}'s timeline: {post.get_content()}")
 
     def get_timeline(self) -> list[str]:
         """Returns the timeline of the user."""
@@ -230,8 +231,18 @@ class SocialNetwork:
         return bool(self.users)
 
     def add_user(self, name: str):
-        """Adds a user to the social network."""
-        self.users[name] = User(name)
+        """
+        Adds a user to the social network.
+
+        Args:
+            name: The name of the user.
+
+        Raises:
+            ValueError: If the user data is invalid.
+        """
+        # Validate user data using Pydantic model
+        validated_user = UserModel(name=name)
+        self.users[name] = User(user_model=validated_user)
 
         log.debug(f"User added to social network: {name}")
 
@@ -243,26 +254,29 @@ class SocialNetwork:
         """Returns the number of users in the social network."""
         return len(self.users)
 
-    def add_post(self, name: str, post: str):
+    def add_post(self, name: str, content: str):
         """
         Adds a post to the user's timeline.
 
         Args:
             name:
                 The name of the user.
-            post:
-                The post to add.
+            content:
+                The content of the new post to add.
 
         Raises:
             ValueError:
-                If the user does not exist.
+                If the user does not exist or if the post data is invalid.
         """
         if not self.has_user(name):
             raise ValueError(f"User {name} does not exist")
         else:
+            # Validate post data using Pydantic model
+            validated_post = PostModel(content=content, author=name)
+            post = Post(validated_post)
             self.users[name].add_post(post)
 
-        log.debug(f"Post added to {name}'s timeline in social network: {post}")
+        log.debug(f"Post added to {name}'s timeline in social network: {content}")
 
     def get_user_timeline(self, name: str) -> list[str]:
         """Returns the timeline of the user."""
@@ -322,8 +336,8 @@ class Application:
         """Initializes a social networking application."""
         self.social_network = SocialNetwork()
         self.commands = {
-            "->": "posting",
-            "follows": "following",
+            "->": "post",
+            "follows": "follow",
             "wall": "wall",
         }.copy()
 
@@ -354,57 +368,53 @@ class Application:
         command = command.strip()
 
         # Check if the command is valid
-        username, action, predicate = None, None, None
+        username, action, target = None, None, None
         for cmd in self.commands:
             if cmd in command:
-                username, predicate = command.split(cmd)
+                username, target = command.split(cmd)
 
                 # Strip whitespace from username and predicate
                 username = username.strip()
-                predicate = predicate.strip()
+                target = target.strip()
                 action = self.commands[cmd]
                 break
 
-        # Execute the command
-        if action == "posting":
-            log.debug(f"Posting command: {username} {predicate}")
-            if username and predicate:
-                if not self.social_network.has_user(username):
-                    self.social_network.add_user(username)
+        print(f"username: {username}, action: {action}, target: {target}")
 
-                self.social_network.add_post(username, predicate)
+        # If no command found, treat as a timeline command
+        if not action:
+            username = command
+            action = "timeline"
+
+        # Validate command using Pydantic model
+        cmd = CommandModel(
+            username=username,
+            action=action,
+            target=target,
+        )
+
+        # Execute command
+        if cmd.action == "post":
+            log.debug(f"Posting command: {cmd.username} {cmd.target}")
+            if not self.social_network.has_user(cmd.username):
+                self.social_network.add_user(cmd.username)
+            self.social_network.add_post(cmd.username, cmd.target)
+        elif cmd.action == "follow":
+            log.debug(f"Following command: {cmd.username} {cmd.target}")
+            self.social_network.follows(cmd.username, cmd.target)
+        elif cmd.action == "wall":
+            log.debug(f"Wall command: {cmd.username}")
+            return self.social_network.get_user_wall(cmd.username)
+        elif cmd.action == "timeline":
+            if self.social_network.has_user(cmd.username):
+                log.debug(f"Reading command: {cmd.username}")
+                return self.social_network.get_user_timeline(cmd.username)
             else:
-                if not username:
-                    raise ValueError("Invalid posting command: username is empty")
-                else:
-                    raise ValueError("Invalid posting command: message is empty")
-        elif action == "following":
-            log.debug(f"Following command: {username} {predicate}")
-            if username and predicate:
-                self.social_network.follows(username, predicate)
-            else:
-                if not username:
-                    raise ValueError("Invalid following command: username is empty")
-                else:
-                    raise ValueError(
-                        "Invalid following command: user to follow is empty"
-                    )
-        elif action == "wall":
-            log.debug(f"Wall command: {username}")
-            if username:
-                return self.social_network.get_user_wall(username)
-            else:
-                raise ValueError("Invalid wall command: username is empty")
-        elif self.get_social_network().has_user(command):
-            # It is a reading command
-            log.debug(f"Reading command: {command}")
-            return self.get_social_network().get_user_timeline(command)
-        elif len(command.split(" ")) == 1:
-            # Assume the user is trying to read the timeline of a nonexistent user
-            log.error(f"Invalid user: {command}")
-            raise ValueError(f"Invalid user: {command}")
+                raise ValueError(f"Invalid user: user {cmd.username} does not exist")
         else:
-            # Assume the command is invalid
+            # This block is unreachable due to Pydantic validation in CommandModel.
+            # Any invalid command will be caught by the model's validation before reaching this point.
+            # Kept for clarity and documentation purposes.
             log.error(f"Invalid command: {command}")
             raise ValueError(f"Invalid command: {command}")
 
