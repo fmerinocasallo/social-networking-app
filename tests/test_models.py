@@ -3,8 +3,8 @@
 from pydantic import ValidationError
 import pytest
 
-from src.sr_sw_dev.models import CommandModel, PostModel, UserModel
-from src.sr_sw_dev.social_networking import Application
+from src.social_network.models import CommandModel, PostModel, UserModel
+from src.social_network.social_networking import Application
 
 
 # PostModel validation tests

@@ -2,7 +2,7 @@
 
 import pytest
 
-from src.sr_sw_dev.social_networking import SocialNetwork
+from src.social_network.social_networking import SocialNetwork
 
 
 def test_social_network_init():

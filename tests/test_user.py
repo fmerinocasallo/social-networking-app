@@ -4,8 +4,8 @@ from datetime import datetime, timedelta
 
 from freezegun import freeze_time
 
-from src.sr_sw_dev.models import PostModel, UserModel
-from src.sr_sw_dev.social_networking import Post, User
+from src.social_network.models import PostModel, UserModel
+from src.social_network.social_networking import Post, User
 
 
 def test_user_init():

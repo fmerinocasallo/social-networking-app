@@ -9,7 +9,7 @@ from pydantic import ValidationError
 import pytest
 from pytest_mock import MockerFixture
 
-from src.sr_sw_dev.social_networking import Application
+from src.social_network.social_networking import Application
 
 
 def test_application_init():

@@ -132,7 +132,7 @@ Note that the proposed solution also follows the [**Single Responsibility Princi
 
 This makes the code more maintainable, testable, and easier to extend.
 
-The source code of the proposed solution is located in `src/sr_sw_dev/`.
+The source code of the proposed solution is located in `src/social_network/`.
 
 Here's a brief description of each class in the social networking
 application:
@@ -185,7 +185,7 @@ python -m pip install .
 Once installed, run the following command to see it in action:
 
 ```
-python src/sr_sw_dev/social_networking.py
+python src/social_network/social_networking.py
 ```
 
 <div id="tests"></div>
@@ -220,7 +220,7 @@ pytest tests
 You may want to get more details about the test coverage
 by running the following shell command:
 ```
-pytest tests --cov=src.sr_sw_dev --cov-report=term-missing
+pytest tests --cov=src.social_network --cov-report=term-missing
 ```
 
 Note that other tools such as [mypy](https://www.mypy-lang.org/index.html)
@@ -271,7 +271,7 @@ The following validation rules are enforced:
   - Must have a non-empty name
   - Must have valid following relationships
 
-These validation rules are implemented using Pydantic models in `src/sr_sw_dev/models.py`
+These validation rules are implemented using Pydantic models in `src/social_network/models.py`
 and tested in `tests/test_models.py`.
 
 For other validation use cases, consider these alternatives:

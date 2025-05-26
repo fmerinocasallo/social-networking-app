@@ -5,8 +5,8 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from freezegun import freeze_time
 
-from src.sr_sw_dev.models import PostModel
-from src.sr_sw_dev.social_networking import Post
+from src.social_network.models import PostModel
+from src.social_network.social_networking import Post
 
 
 def test_post_init():
