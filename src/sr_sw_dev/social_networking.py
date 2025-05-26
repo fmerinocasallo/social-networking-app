@@ -321,29 +321,27 @@ class SocialNetwork:
             return [str(post) for post in wall]
 
 
-class CommandProcessor:
+class Application:
     """
-    A command processor for the social network.
+    A social networking application.
 
     Attributes:
         social_network:
-            The social network to process commands for.
+            The social network of the application.
     """
 
-    def __init__(self, social_network: SocialNetwork):
-        """
-        Initializes a command processor.
+    def __init__(self):
+        """Initializes a social networking application."""
+        self.social_network = SocialNetwork()
 
-        Args:
-            social_network:
-                The social network to process commands for.
-        """
-        self.social_network = social_network
+        log.debug("Application initialized")
 
-        log.debug("Command processor initialized")
+    def has_social_network(self) -> bool:
+        """Checks if the application has a social network."""
+        return bool(self.social_network)
 
     def get_social_network(self) -> SocialNetwork:
-        """Returns the social network of the command processor."""
+        """Returns the social network of the application."""
         return self.social_network
 
     def parse_command(self, command: str) -> CommandModel:
@@ -429,64 +427,24 @@ class CommandProcessor:
             # This block is unreachable due to Pydantic validation in CommandModel
             raise ValueError(f"Invalid command: {command}")
 
-
-class Application:
-    """
-    A social networking application.
-
-    Attributes:
-        social_network:
-            The social network of the application.
-        command_processor:
-            The command processor of the application.
-    """
-
-    def __init__(self):
-        """Initializes a social networking application."""
-        self.social_network = SocialNetwork()
-        self.command_processor = CommandProcessor(self.social_network)
-
-        log.debug("Application initialized")
-
-    def has_social_network(self) -> bool:
-        """Checks if the application has a social network."""
-        return bool(self.social_network)
-
-    def get_social_network(self) -> SocialNetwork:
-        """Returns the social network of the application."""
-        return self.social_network
-
-    def parse_command(self, command: str) -> list[str] | None:
-        """Parses and executes a command.
-
-        Args:
-            command:
-                The command to parse and execute.
-
-        Returns:
-            The result of the command execution, if any.
-
-        Raises:
-            ValueError:
-                If the command is invalid.
-        """
-        return self.command_processor.execute_command(command)
+    def run(self):
+        """Runs the application in interactive mode."""
+        while True:
+            try:
+                command = input("> ")
+                if command.lower() == "exit":
+                    break
+                else:
+                    result = self.execute_command(command)
+                    if result:
+                        print("\n".join(result))
+            except (KeyboardInterrupt, EOFError):
+                print("Exit")
+                break
+            except ValueError as e:
+                print(e)
 
 
 if __name__ == "__main__":
     app = Application()
-
-    while True:
-        try:
-            command = input("> ")
-            if command.lower() == "exit":
-                break
-            else:
-                result = app.parse_command(command)
-                if result:
-                    print("\n".join(result))
-        except (KeyboardInterrupt, EOFError):
-            print("Exit")
-            break
-        except ValueError as e:
-            print(e)
+    app.run()
